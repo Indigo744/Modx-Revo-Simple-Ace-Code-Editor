@@ -20,7 +20,7 @@
  *
  * Based on Ace Source Editor Plugin by Danil Kostin
  *
- * @package ace
+ * @package SimpleAceCodeEditor
  *
  * @var array $scriptProperties
  * @var Ace $ace

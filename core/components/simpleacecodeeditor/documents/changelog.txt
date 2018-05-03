@@ -1,4 +1,8 @@
 
+03 May 2018 - Indigo74
+Version 1.1
+Moved from PackMan to proper build script
+
 11 Apr. 2018 - Indigo74
 GitHub repo init
 
