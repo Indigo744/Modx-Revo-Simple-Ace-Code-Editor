@@ -13,8 +13,23 @@
  * Properties:
  *     AcePath: URL or path to ACE javascript file
  *              default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js
- *     AceTheme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
- *              default: monokai
+ *     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
+ *            default: monokai
+ *     ReplaceCTRLDKbdShortcut: Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action
+ *                              duplicate the current line or selection (instead of deleting, which is the default behavior)
+ *                              default: true
+ *     Autocompletion: Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing)
+ *                     Note that "ext-language_tools.js" must be available alongside ace.js
+ *                     default: basic
+ *     SettingsMenu: Add a settings menu accessible with CTR-Q (or CMD-Q)
+ *                   Note that "ext-settings_menu.js" must be available alongside ace.js
+ *                   default: false
+ *     Spellcheck: Enable spellcheck
+ *                 Note that "ext-spellcheck.js" must be available alongside ace.js
+ *                 default: false
+ *     Emmet: Enable emmet
+ *            Note that "ext-emmet.js" must be available alongside ace.js
+ *            default: false
  * 
  * If you want to edit a property, create your own property set first.
  *
@@ -42,11 +57,81 @@ if ($modx->getOption('which_element_editor', null) !== $pluginName) {
     return;
 }
 
+/** Get properties **/
+$AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, "https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"));
+$AceTheme = $modx->getoption('Theme', $scriptProperties, $modx->getOption($pluginName . '.Theme', null, 'monokai'));
+$AceReplaceCTRLDKbdShortcut = $modx->getoption('ReplaceCTRLDKbdShortcut', $scriptProperties, $modx->getOption($pluginName . '.ReplaceCTRDKbdShortcut', null, true));
+$AceAutocompletion = $modx->getoption('Autocompletion', $scriptProperties, $modx->getOption($pluginName . '.Autocompletion', null, 'basic'));
+$AceSettingsMenu = $modx->getoption('SettingsMenu', $scriptProperties, $modx->getOption($pluginName . '.SettingsMenu', null, false));
+$AceSpellcheck = $modx->getoption('Spellcheck', $scriptProperties, $modx->getOption($pluginName . '.Spellcheck', null, false));
+$AceEmmet = $modx->getoption('Emmet', $scriptProperties, $modx->getOption($pluginName . '.Emmet', null, false));
 
-/** Get options **/
-$AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, ''));
-$AceTheme = $modx->getoption('AceTheme', $scriptProperties, $modx->getOption($pluginName . '.AceTheme', null, 'monokai'));
+/** Inits script options **/
+$AceBasePath = dirname($AcePath);
+$scriptPaths = array($AcePath);
+$editorOptions = array();
+$editorAdditionalScript = "\n";
 
+/** Handle proper CTRL-D **/
+if ($AceReplaceCTRLDKbdShortcut == true) {
+    $editorAdditionalScript .= <<<JSSCRIPT
+        editor.commands.removeCommand('del');
+        editor.commands.addCommand({
+            name: "del",
+            bindKey: {win: "Delete",  mac: "Delete|Shift-Delete"},
+            exec: function(editor) { editor.remove("right"); },
+            multiSelectAction: "forEach",
+            scrollIntoView: "cursor"
+        });
+        editor.commands.addCommand({
+            name: "duplicateSelection",
+            bindKey: {win: "Ctrl-D", mac: "Command-D"},
+            exec: function(editor) { editor.duplicateSelection(); },
+            scrollIntoView: "cursor",
+            multiSelectAction: "forEach"
+        });
+JSSCRIPT;
+}
+
+/** Handle autocompletion extension **/
+if ($AceAutocompletion === 'live' || $AceAutocompletion === 'basic') {
+    $editorOptions['enableBasicAutocompletion'] = true;
+    $editorOptions['enableLiveAutocompletion'] = $AceAutocompletion === 'live';
+    array_push($scriptPaths, "$AceBasePath/ext-language_tools.js");
+}
+
+/** Handle settings_menu extension **/
+if ($AceSettingsMenu == true) {
+    $editorAdditionalScript .= <<<JSSCRIPT
+        var RequiresettingsMenu = ace.require('ace/ext/settings_menu');
+        if (RequiresettingsMenu) {
+            // Init with current editor
+            RequiresettingsMenu.init(editor);
+            // Set CTRL-Q shortcut
+        	editor.commands.addCommands([{
+        		name: "showSettingsMenu",
+        		bindKey: {win: "Ctrl-q", mac: "Ctrl-q"},
+        		exec: function(editor) {
+        			editor.showSettingsMenu();
+        		},
+        		readOnly: true
+        	}]);
+        }
+JSSCRIPT;
+    array_push($scriptPaths, "$AceBasePath/ext-settings_menu.js");
+} 
+
+/** Handle Spellcheck extension **/
+if ($AceSpellcheck == true) {
+    $editorOptions['spellcheck'] = true;
+    array_push($scriptPaths, "$AceBasePath/ext-spellcheck.js");
+} 
+
+/** Handle Emmet extension **/
+if ($AceEmmet == true) {
+    $editorOptions['enableEmmet'] = true;
+    array_push($scriptPaths, "$AceBasePath/ext-emmet.js");
+}
 
 /** Corresponding arrays **/
 $mimeTypeToMode = array(
@@ -55,6 +140,7 @@ $mimeTypeToMode = array(
     'application/xhtml+xml' => 'html',
     'text/css'              => 'css',
     'text/x-scss'           => 'scss',
+    'text/x-sass'           => 'scss',
     'text/x-less'           => 'less',
     'image/svg+xml'         => 'svg',
     'application/xml'       => 'xml',
@@ -76,6 +162,7 @@ $extensionMap = array(
     'html'  => 'text/html',
     'css'   => 'text/css',
     'scss'  => 'text/x-scss',
+    'sass'  => 'text/x-sass',
     'less'  => 'text/x-less',
     'svg'   => 'image/svg+xml',
     'xml'   => 'application/xml',
@@ -153,9 +240,14 @@ switch ($modx->event->name) {
 if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
     // Get corresponding Ace mode according to mime type
     $mode = $mimeTypeToMode[$mimeType];
+    $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
     
-    $script = <<<JSSCRIPT
-<script src="{$AcePath}" type="text/javascript" charset="utf-8"></script>
+    $script = "";
+    foreach($scriptPaths as $scriptPath) {
+        $script .= "<script src='$scriptPath' type='text/javascript' charset='utf-8'></script>\n";
+    }
+    
+    $script .= <<<JSSCRIPT
 <script type="text/javascript">
     (function() {
     
@@ -192,11 +284,16 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
             textarea.style.visibility = 'hidden';
             
             // Create Ace editor !
-            var editor = ace.edit(aceEditorDiv);
+            editor = ace.edit(aceEditorDiv);
             
             // Ace Editor settings
-            editor.setTheme("ace/theme/{$AceTheme}");
+            {$editorAdditionalScript}
+            editor.setOptions({$editorOptions});
+            editor.renderer.setOptions({
+                theme: "ace/theme/{$AceTheme}"
+            });
             editor.session.setMode("ace/mode/{$mode}");
+            
             editor.getSession().setValue(textarea.value);
             
             // Keep Ace and textarea synchronized

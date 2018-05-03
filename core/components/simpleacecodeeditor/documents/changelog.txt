@@ -1,10 +1,19 @@
 
 03 May 2018 - Indigo74
-Version 1.1
+Version 1.2.0
+ * Updated default CDNJS URL to ACE 1.3.3
+ * Renamed property AceTheme to Theme (and propose a list of available theme)
+ * Added properties: ReplaceCTRLDKbdShortcut, Autocompletion, SettingsMenu, Spellcheck, Emmet
+ * Added text/x-sass MIME detection
+ * Added .sass file detection
+
+03 May 2018 - Indigo74
+Version 1.1.0
 Moved from PackMan to proper build script
 
 11 Apr. 2018 - Indigo74
 GitHub repo init
 
 18 Feb. 2018 - Indigo74
+Version 1.0.0
 Initial version

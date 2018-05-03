@@ -1,7 +1,7 @@
 --------------------
 Extra: Simple Ace Code Editor
 --------------------
-Version: 1.1.0
+Version: 1.2.0
 Created: 03 May. 2018
 Since: 17 Feb. 2018
 Author: Indigo744 <https://github.com/Indigo744>

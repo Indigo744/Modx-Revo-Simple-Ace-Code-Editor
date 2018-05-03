@@ -1,11 +1,14 @@
---------------------
-Extra: Simple Ace Code Editor
---------------------
-Version: 1.1.0
-Created: 03 May. 2018
-Since: 17 Feb. 2018
-Author: Indigo744 <https://github.com/Indigo744>
-Based on the work of Danil Kostin <danya.postfactum@gmail.com> of Ace extra
-License: GNU GPLv3
 
+# Modx Extra: Simple Ace Code Editor
+
+This is a [MODX Revolution](https://modx.com) extra.
 Integrates Ace Code Editor into MODx Revolution in a simple way.
+
+--------------------
+
+# Install
+
+Install from MODX Extra repository (recommanded): https://modx.com/extras/package/simpleacecodeeditor
+
+Or upload manually the file from `_dist` folder to your MODX installation.
+
