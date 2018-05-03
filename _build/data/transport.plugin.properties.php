@@ -98,5 +98,12 @@ $properties = array(
         'value' => '0',
         'options' => '',
     ),
+    array(
+        'name' => 'ChunkDetectMIMEShebang',
+        'desc' => "Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content) - \n Supported MIME values are text/x-smarty, text/html, application/xhtml+xml, text/css, text/x-scss, text/x-sass, text/x-less, image/svg+xml, application/xml, text/xml, text/javascript, application/javascript, application/json, text/x-php, application/x-php, text/x-sql, text/x-markdown, text/plain, text/x-twig",
+        'type' => 'combo-boolean',
+        'value' => '1',
+        'options' => '',
+    ),
 );
 return $properties;
