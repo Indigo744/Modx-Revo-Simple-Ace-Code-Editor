@@ -68,7 +68,6 @@ if ($modx->event->name == 'OnRichTextEditorRegister') {
     return;
 }
 
-
 /** Check if RTE (element) setting is set to this **/
 if ($modx->getOption('which_element_editor', null) !== $pluginName) {
     return;
@@ -291,6 +290,7 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
     $script .= <<<JSSCRIPT
 <script type="text/javascript">
     (function() {
+        "use strict";
     
         // Max number of tries
         var MAX_TRIES = 10;
@@ -304,7 +304,8 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
         // Will hold the textarea DOM element
         var textarea;
         
-        /* Function Init ACE editor
+        /** 
+         * Function Init ACE editor
          * Uses textarea variable
          */
         var initAceCodeEditor = function() {
@@ -325,10 +326,12 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
             textarea.style.visibility = 'hidden';
             
             // Create Ace editor !
-            editor = ace.edit(aceEditorDiv);
+            var editor = ace.edit(aceEditorDiv);
             
             // Ace Editor settings
+            
             {$editorAdditionalScript}
+            
             editor.setOptions({$editorOptions});
             editor.renderer.setOptions({
                 theme: "ace/theme/{$AceTheme}"
@@ -344,7 +347,8 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
             
         }
         
-        /* Function search for the textarea
+        /** 
+         * Function search for the textarea
          * Recursive function
          * If textarea is not found, wait a bit and search again
          */
