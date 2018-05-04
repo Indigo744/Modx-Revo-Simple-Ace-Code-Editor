@@ -19,7 +19,7 @@ set_time_limit(0);
 define('PKG_NAME','SimpleAceCodeEditor');
 define('PKG_NAMESPACE','simpleacecodeeditor');
 define('PKG_VERSION','1.3.0');
-define('PKG_RELEASE','dev');
+define('PKG_RELEASE','pl');
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(
