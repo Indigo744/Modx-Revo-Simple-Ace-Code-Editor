@@ -84,6 +84,7 @@ $AceEmmet = $modx->getoption('Emmet', $scriptProperties, $modx->getOption($plugi
 $AceChunkDetectMIMEShebang = $modx->getoption('ChunkDetectMIMEShebang', $scriptProperties, $modx->getOption($pluginName . '.ChunkDetectMIMEShebang', null, true));
 
 /** Inits script options **/
+$AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
 $AceBasePath = dirname($AcePath);
 $scriptPaths = array($AcePath);
 $editorOptions = array();
@@ -195,22 +196,26 @@ $extensionMap = array(
 /** Adapt field/mime depending on event type **/
 $mimeType = false;
 $field = false;
+$mixedMode = true;
 switch ($modx->event->name) {
     case 'OnSnipFormPrerender':
         // Snippets are PHP
         $field = 'modx-snippet-snippet';
         $mimeType = 'application/x-php';
+        $mixedMode = false;
         break;
     case 'OnTempFormPrerender':
         // Templates are HTML
         $field = 'modx-template-content';
         $mimeType = 'text/html';
+        $mixedMode = true;
         break;
     case 'OnChunkFormPrerender':
         // Chunks are HTML
         // unless it is static then we look at the file extension
         // unless it a proper mime type is set in description or first line of chunk!
         $field = 'modx-chunk-snippet';
+        $mixedMode = true;
         if ($modx->controller->chunk && $modx->controller->chunk->isStatic()) {
             $extension = pathinfo($modx->controller->chunk->getSourceFile(), PATHINFO_EXTENSION);
             $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
@@ -243,11 +248,13 @@ switch ($modx->event->name) {
         // Plugins are PHP
         $field = 'modx-plugin-plugincode';
         $mimeType = 'application/x-php';
+        $mixedMode = false;
         break;
     case 'OnFileCreateFormPrerender':
         // On file creation, use plain text
         $field = 'modx-file-content';
         $mimeType = 'text/plain';
+        $mixedMode = true;
         break;
     case 'OnFileEditFormPrerender':
         // For file editing, we look at the file extension
@@ -255,6 +262,7 @@ switch ($modx->event->name) {
         // Identify mime type according to extension
         $extension = pathinfo($scriptProperties['file'], PATHINFO_EXTENSION);
         $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
+        $mixedMode = true;
         break;
     case 'OnDocFormPrerender':
         // For document, we look at the content type
@@ -271,6 +279,7 @@ switch ($modx->event->name) {
         }
         $field = 'ta';
         $mimeType = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
+        $mixedMode = true;
         break;
     default:
         return;
@@ -280,13 +289,73 @@ switch ($modx->event->name) {
 if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
     // Get corresponding Ace mode according to mime type
     $mode = $mimeTypeToMode[$mimeType];
+    
+    // Handle mixed mode
+    if ($mixedMode == true) {
+        // Mixed mode, set needed files and functions 
+        
+        array_push($scriptPaths, "$AceAssetsUrl/modx_highlight_rules.js");
+        
+        $setModeScript = <<<JSSCRIPT
+            /** 
+             * Function to create a mixed mode with MODX tags
+             * Based on the work of danyaPostfactum, see link below
+             * https://github.com/danyaPostfactum/modx-ace/blob/master/assets/components/ace/modx.texteditor.js
+             */
+            var createModxMixedMode = function(Mode) {
+                function ModxMixedMode() {
+                    Mode.call(this);
+                    var HighlightRules = this.HighlightRules;
+            
+                    function ModxMixedHighlightRules() {
+                        HighlightRules.call(this);
+                        
+                        // Retrieve modx rules
+                        modxSetHighlightRules(this);
+            
+                        this.normalizeRules();
+                    }
+            
+                    ModxMixedHighlightRules.prototype = HighlightRules.prototype;
+            
+                    this.HighlightRules = ModxMixedHighlightRules;
+                }
+                ModxMixedMode.prototype = Object.create(Mode.prototype, {
+                    constructor: {value: ModxMixedMode}
+                });
+                return new ModxMixedMode();
+            };
+            
+            /** 
+             * Function to set a mixed mode
+             */
+            var setMixedMode = function(editor, mode) {
+                var config = ace.require('ace/config');
+                config.loadModule(["mode", 'ace/mode/' + mode], function(module) {
+                    var mode = createModxMixedMode(module.Mode);
+                    editor.session.setMode(mode);
+                }.bind(this));
+            }
+                
+            setMixedMode(editor, "{$mode}");
+JSSCRIPT;
+
+    } else {
+        // No mixed mode, simply set mode
+        $setModeScript = "editor.session.setMode('ace/mode/{$mode}');";
+    }
+    
+    // Convert options to JSON object
     $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
     
+    // Generate final script!
     $script = "";
     foreach($scriptPaths as $scriptPath) {
+        // Include each external files
         $script .= "<script src='$scriptPath' type='text/javascript' charset='utf-8'></script>\n";
     }
     
+    // The script...
     $script .= <<<JSSCRIPT
 <script type="text/javascript">
     (function() {
@@ -336,7 +405,8 @@ if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
             editor.renderer.setOptions({
                 theme: "ace/theme/{$AceTheme}"
             });
-            editor.session.setMode("ace/mode/{$mode}");
+            
+            {$setModeScript}
             
             editor.getSession().setValue(textarea.value);
             

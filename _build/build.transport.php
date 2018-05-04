@@ -29,6 +29,7 @@ $sources = array(
     'data' => $root . '_build/data/',
     'documents' => $root.'core/components/'.PKG_NAMESPACE.'/documents/',
     'elements' => $root.'core/components/'.PKG_NAMESPACE.'/elements/',
+    'source_assets' => $root.'assets/components/'.PKG_NAMESPACE,
     'source_core' => $root.'core/components/'.PKG_NAMESPACE,
 );
 unset($root);
@@ -84,6 +85,10 @@ $attributes= array(
 );
 $vehicle = $builder->createVehicle($plugin, $attributes);
 $modx->log(modX::LOG_LEVEL_INFO,'Adding file resolvers to plugin...');
+$vehicle->resolve('file',array(
+    'source' => $sources['source_assets'],
+    'target' => "return MODX_ASSETS_PATH . 'components/';",
+));
 $vehicle->resolve('php',array(
     'source' => $sources['data'].'transport.resolver.php',
 	'name' => 'resolve',
