@@ -108,8 +108,16 @@ Here is how a file extension is mapped to its MIME type:
  * __`.php`__: `application/x-php`
  * __`.sql`__: `text/x-sql`
  * __`.txt`__: `text/plain`
+ * __`htaccess`__: `application/x-extension-htaccess`
+ * __`coffee`__: `application/vnd.coffeescript`
+ * __`litcoffee`__: `application/vnd.coffeescript`
+ * __`ts`__: `application/x-typescript`
+ * __`ini`__: `text/x-ini`
+ * __`ejs`__: `text/x-ejs`
+ * __`md`__: `text/markdown`
+ * __`sql`__: `application/x-perl`
 
-
+ 
 ## Supported mode (syntax highlighting)
 
 Here is how a MIME type is mapped to its mode:
@@ -130,10 +138,19 @@ Here is how a MIME type is mapped to its mode:
  * __`text/x-php`__: `php`
  * __`application/x-php`__: `php`
  * __`text/x-sql`__: `sql`
+ * __`application/sql`__: `sql`
  * __`text/x-markdown`__: `markdown`
+ * __`text/markdown`__: `markdown`
  * __`text/plain`__: `text`
  * __`text/x-twig`__: `twig'
+ * __`application/x-extension-htaccess`__: `apache_conf`
+ * __`application/vnd.coffeescript`__: `coffee`
+ * __`application/x-typescript`__: `typescript`
+ * __`text/x-ini`__: `ini`
+ * __`text/x-ejs`__: `ejs`
+ * __`application/x-perl`__: `perl`
 
+ 
 ## MIME detection for Chunks (_ChunkDetectMIMEShebang_ feature)
 
 By default, chunk are HTML and they are highlighted as such. However, you could want to store other type of data in a chunk, and want to have proper highlighting. For example, you could want to store directly Javascript code, or SASS, or LESS, etc...
