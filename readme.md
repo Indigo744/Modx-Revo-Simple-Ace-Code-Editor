@@ -12,14 +12,14 @@ It is available as a package in MODX Extra repository: https://modx.com/extras/p
  * Dead simple. Really.
  * Works out of the box with sensible default
  * CTRL-D to duplicate
- * Autocompletion on CTRL-SPACE
+ * Auto completion on CTRL-SPACE
  * MODX tag highlighting
  * Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
 
 ## Install
 
-It is recommanded to install from MODX Extra repository (see link above).
+It is recommended to install from MODX Extra repository (see link above).
 
 You can also upload manually the transport package (found in `_dist` folder) to your MODX installation.
 
@@ -44,7 +44,7 @@ Dark themes: `ambiance`, `chaos`, `clouds_midnight`, `dracula`, `cobalt`, `gruvb
 
 *default: `true`*
 
-**Autocompletion**: Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing).
+**Autocompletion**: Enable Auto-completion: none, basic (show on CTRL-Space) or live (show on typing).
 Note that "ext-language_tools.js" must be available alongside ace.js
 
 *default: `basic`*
@@ -55,13 +55,13 @@ Note that "ext-settings_menu.js" must be available alongside ace.js
   
 *default: `false`*
 
-**Spellcheck**: Enable spellcheck
+**Spellcheck**: Enable spell-check
 
 Note that "ext-spellcheck.js" must be available alongside ace.js
 
 *default: `false`*
 
-**Emmet**: Enable emmet
+**Emmet**: Enable Emmet
 
 Note that "ext-emmet.js" must be available alongside ace.js
    
@@ -83,7 +83,7 @@ When the editor is initialized, a proper mode (i.e. syntax highlighting) is pick
 **For Templates**: HTML (`text/html`)
 **For Snippets**: PHP (`application/x-php`)
 **For Plugins**: PHP (`application/x-php`)
-**For Chunks**: HTML (`text/html`) or based on file extension if static (can be overrided using _ChunkDetectMIMEShebang_ feature)
+**For Chunks**: HTML (`text/html`) or based on file extension if static (can be overridden using _ChunkDetectMIMEShebang_ feature)
 **For File creation**: No specific highlighting (`text/plain`)
 **For File edition**: based on file extension
 **For document (page) edition**: based on content type set

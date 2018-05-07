@@ -22,7 +22,7 @@
  *                              duplicate the current line or selection (instead of deleting, which is the default behavior)
  *                              default: true
  *
- *     Autocompletion: Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing)
+ *     Autocompletion: Enable Auto-completion: none, basic (show on CTRL-Space) or live (show on typing)
  *                     Note that "ext-language_tools.js" must be available alongside ace.js
  *                     default: basic
  *
@@ -30,11 +30,11 @@
  *                   Note that "ext-settings_menu.js" must be available alongside ace.js
  *                   default: false
  *
- *     Spellcheck: Enable spellcheck
+ *     Spellcheck: Enable spell-check
  *                 Note that "ext-spellcheck.js" must be available alongside ace.js
  *                 default: false
  *
- *     Emmet: Enable emmet
+ *     Emmet: Enable Emmet
  *            Note that "ext-emmet.js" must be available alongside ace.js
  *            default: false
  *
