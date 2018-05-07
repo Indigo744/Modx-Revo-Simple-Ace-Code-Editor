@@ -305,10 +305,10 @@ switch ($modx->event->name) {
         return;
 }
 
-/** If mime type and field found, include the javascript code to load Ace **/
-if ($mimeType && $field && array_key_exists($mimeType, $mimeTypeToMode)) {
+/** If field found, include the javascript code to load Ace **/
+if ($field) {
     // Get corresponding Ace mode according to mime type
-    $mode = $mimeTypeToMode[$mimeType];
+    $mode = isset($mimeTypeToMode[$mimeType]) ? $mimeTypeToMode[$mimeType] : 'text';
     
     // Handle mixed mode
     if ($mixedMode == true) {
