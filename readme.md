@@ -76,8 +76,65 @@ See chapter "MIME detection for Chunks" below.
 *default: `true`*
 
 
+## MIME detection
 
-## MIME detection for Chunks
+When the editor is initialized, a proper mode (i.e. syntax highlighting) is picked based on several rules.
+
+**For Templates**: HTML (`text/html`)
+**For Snippets**: PHP (`application/x-php`)
+**For Plugins**: PHP (`application/x-php`)
+**For Chunks**: HTML (`text/html`) or based on file extension if static (can be overrided using _ChunkDetectMIMEShebang_ feature)
+**For File creation**: No specific highlighting (`text/plain`)
+**For File edition**: based on file extension
+**For document (page) edition**: based on content type set
+
+
+## File extension mapping
+
+Here is how a file extension is mapped to its MIME type:
+
+ * __`.tpl`__: `text/html`
+ * __`.htm`__: `text/html`
+ * __`.html`__: `text/html`
+ * __`.css`__: `text/css`
+ * __`.scss`__: `text/x-scss`
+ * __`.sass`__: `text/x-sass`
+ * __`.less`__: `text/x-less`
+ * __`.svg`__: `image/svg+xml`
+ * __`.xml`__: `application/xml`
+ * __`.xsl`__: `application/xml`
+ * __`.js`__: `application/javascript`
+ * __`.json`__: `application/json`
+ * __`.php`__: `application/x-php`
+ * __`.sql`__: `text/x-sql`
+ * __`.txt`__: `text/plain`
+
+
+## Supported mode (syntax highlighting)
+
+Here is how a MIME type is mapped to its mode:
+
+ * __`text/x-smarty`__: `smarty`
+ * __`text/html`__: `html`
+ * __`application/xhtml+xml`__: `html`
+ * __`text/css`__: `css`
+ * __`text/x-scss`__: `scss`
+ * __`text/x-sass`__: `scss`
+ * __`text/x-less`__: `less`
+ * __`image/svg+xml`__: `svg`
+ * __`application/xml`__: `xml`
+ * __`text/xml`__: `xml`
+ * __`text/javascript`__: `javascript`
+ * __`application/javascript`__: `javascript`
+ * __`application/json`__: `json`
+ * __`text/x-php`__: `php`
+ * __`application/x-php`__: `php`
+ * __`text/x-sql`__: `sql`
+ * __`text/x-markdown`__: `markdown`
+ * __`text/plain`__: `text`
+ * __`text/x-twig`__: `twig'
+
+## MIME detection for Chunks (_ChunkDetectMIMEShebang_ feature)
 
 By default, chunk are HTML and they are highlighted as such. However, you could want to store other type of data in a chunk, and want to have proper highlighting. For example, you could want to store directly Javascript code, or SASS, or LESS, etc...
 
