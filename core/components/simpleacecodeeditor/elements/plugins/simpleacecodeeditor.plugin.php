@@ -216,13 +216,10 @@ switch ($modx->event->name) {
         // unless it a proper mime type is set in description or first line of chunk!
         $field = 'modx-chunk-snippet';
         $mixedMode = true;
-        if ($modx->controller->chunk && $modx->controller->chunk->isStatic()) {
-            $extension = pathinfo($modx->controller->chunk->getSourceFile(), PATHINFO_EXTENSION);
-            $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
-        } else {
-            
+        
+        if ($modx->controller->chunk) {
             /** Try to detect shebang **/
-            if ($AceChunkDetectMIMEShebang && $modx->controller->chunk) {
+            if ($AceChunkDetectMIMEShebang) {
                 // Retrieve description
                 $chunkDescription = $modx->controller->chunk->get('description');
                 // Retrieve first line of chunk content
@@ -238,11 +235,18 @@ switch ($modx->event->name) {
                 }
             }
             
-            /** Default to HTML **/
-            if (!$mimeType)  {
-                $mimeType = 'text/html';
+            /** For static file, try to detect through file extension **/
+            if (!$mimeType && $modx->controller->chunk->isStatic()) {
+                $extension = pathinfo($modx->controller->chunk->getSourceFile(), PATHINFO_EXTENSION);
+                $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
             }
         }
+        
+        /* Default to HTML */
+        if (!$mimeType) {
+            $mimeType = 'text/html';
+        }
+        
         break;
     case 'OnPluginFormPrerender':
         // Plugins are PHP
