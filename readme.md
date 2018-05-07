@@ -71,7 +71,28 @@ Note that "ext-emmet.js" must be available alongside ace.js
 
 This is particularly useful if your chunk contains directly JS, or SASS, or anything different than HTML...
 
-Supported MIME values are `text/x-smarty`, `text/html`, `application/xhtml+xml`, `text/css`, `text/x-scss`, `text/x-sass`, `text/x-less`, `image/svg+xml`, `application/xml`, `text/xml`, `text/javascript`, `application/javascript`, `application/json`, `text/x-php`, `application/x-php`, `text/x-sql`, `text/x-markdown`, `text/plain`, `text/x-twig`
+See chapter "MIME detection for Chunks" below.
 
 *default: `true`*
+
+
+
+## MIME detection for Chunks
+
+Detected values are `text/x-smarty`, `text/html`, `application/xhtml+xml`, `text/css`, `text/x-scss`, `text/x-sass`, `text/x-less`, `image/svg+xml`, `application/xml`, `text/xml`, `text/javascript`, `application/javascript`, `application/json`, `text/x-php`, `application/x-php`, `text/x-sql`, `text/x-markdown`, `text/plain`, `text/x-twig`
+
+The examples below are for a chunk that is used for storing [SASS](https://sass-lang.com) content (corresponding type is `text/x-sass` or `text/x-scss`).
+
+
+__You can specify this value directly in your chunk, on the first line (usually inside a comment):__
+
+![](https://user-images.githubusercontent.com/7137528/39598106-c3b611ec-4f17-11e8-9869-12f1f705a099.png "MIME type in chunk's content")
+
+
+__Or you can specify this value in the chunk's description.__
+
+![](https://user-images.githubusercontent.com/7137528/39598124-cf5e1878-4f17-11e8-88ea-adeb3441f95c.png "MIME type in chunk's description")
+
+
+
 
