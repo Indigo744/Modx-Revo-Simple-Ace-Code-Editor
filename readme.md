@@ -79,7 +79,11 @@ See chapter "MIME detection for Chunks" below.
 
 ## MIME detection for Chunks
 
-Detected values are `text/x-smarty`, `text/html`, `application/xhtml+xml`, `text/css`, `text/x-scss`, `text/x-sass`, `text/x-less`, `image/svg+xml`, `application/xml`, `text/xml`, `text/javascript`, `application/javascript`, `application/json`, `text/x-php`, `application/x-php`, `text/x-sql`, `text/x-markdown`, `text/plain`, `text/x-twig`
+By default, chunk are HTML and they are highlighted as such. However, you could want to store other type of data in a chunk, and want to have proper highlighting. For example, you could want to store directly Javascript code, or SASS, or LESS, etc...
+
+The property _ChunkDetectMIMEShebang_ (enabled by default) will let you specify, if needed, a specific MIME type to highligh your chunk with.
+
+Detected MIME values are `text/x-smarty`, `text/html`, `application/xhtml+xml`, `text/css`, `text/x-scss`, `text/x-sass`, `text/x-less`, `image/svg+xml`, `application/xml`, `text/xml`, `text/javascript`, `application/javascript`, `application/json`, `text/x-php`, `application/x-php`, `text/x-sql`, `text/x-markdown`, `text/plain`, `text/x-twig`
 
 The examples below are for a chunk that is used for storing [SASS](https://sass-lang.com) content (corresponding type is `text/x-sass` or `text/x-scss`).
 
@@ -92,7 +96,4 @@ __You can specify this value directly in your chunk, on the first line (usually 
 __Or you can specify this value in the chunk's description.__
 
 ![](https://user-images.githubusercontent.com/7137528/39598124-cf5e1878-4f17-11e8-88ea-adeb3441f95c.png "MIME type in chunk's description")
-
-
-
 
