@@ -18,8 +18,9 @@ set_time_limit(0);
 /* define version */
 define('PKG_NAME','SimpleAceCodeEditor');
 define('PKG_NAMESPACE','simpleacecodeeditor');
-define('PKG_VERSION','1.3.0');
+define('PKG_VERSION','1.3.1');
 define('PKG_RELEASE','pl');
+define('PKG_DESCRIPTION',sprintf('Ace Code Editor *simple* integration - %s-%s', PKG_VERSION, PKG_RELEASE));
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(
@@ -48,7 +49,7 @@ $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PK
 $plugin= $modx->newObject('modPlugin');
 $plugin->set('id',1);
 $plugin->set('name', PKG_NAME);
-$plugin->set('description', 'Ace Code Editor *simple* integration for MODx Revolution');
+$plugin->set('description', PKG_DESCRIPTION);
 $plugin->set('plugincode', getFileContentsWithoutPHPTags($sources['elements'].'plugins/'.PKG_NAMESPACE.'.plugin.php'));
 $plugin->set('category', 0);
 /* add plugin events */
