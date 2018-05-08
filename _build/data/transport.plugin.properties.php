@@ -68,7 +68,7 @@ $properties = array(
     ),
     array(
         'name' => 'Autocompletion',
-        'desc' => 'Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing) - Note that "ext-language_tools.js" must be available alongside ace.js',
+        'desc' => 'Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing) - Note that "ext-language_tools.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-language_tools.js)',
         'type' => 'list',
         'value' => 'basic',
         'options' => array(
@@ -79,28 +79,28 @@ $properties = array(
     ),
     array(
         'name' => 'SettingsMenu',
-        'desc' => 'Add a settings menu accessible with CTR-Q (or CMD-Q) - Note that "ext-settings_menu.js" must be available alongside ace.js',
+        'desc' => 'Add a settings menu accessible with CTR-Q (or CMD-Q) - Note that "ext-settings_menu.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-settings_menu.js)',
         'type' => 'combo-boolean',
         'value' => '0',
         'options' => '',
     ),
     array(
         'name' => 'Spellcheck',
-        'desc' => 'Enable spellcheck - Note that "ext-spellcheck.js" must be available alongside ace.js',
+        'desc' => 'Enable spellcheck - Note that "ext-spellcheck.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-spellcheck.js)',
         'type' => 'combo-boolean',
         'value' => '0',
         'options' => '',
     ),
     array(
         'name' => 'Emmet',
-        'desc' => 'Enable emmet - Note that "ext-emmet.js" must be available alongside ace.js',
+        'desc' => 'Enable emmet - Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)',
         'type' => 'combo-boolean',
         'value' => '0',
         'options' => '',
     ),
     array(
         'name' => 'ChunkDetectMIMEShebang',
-        'desc' => "Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content) - \n Supported MIME values are text/x-smarty, text/html, application/xhtml+xml, text/css, text/x-scss, text/x-sass, text/x-less, image/svg+xml, application/xml, text/xml, text/javascript, application/javascript, application/json, text/x-php, application/x-php, text/x-sql, text/x-markdown, text/plain, text/x-twig",
+        'desc' => "Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content) - See README for supported MIME values",
         'type' => 'combo-boolean',
         'value' => '1',
         'options' => '',

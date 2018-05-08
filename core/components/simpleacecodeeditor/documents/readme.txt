@@ -13,7 +13,7 @@ Integrates Ace Code Editor into MODx Revolution in a simple way.
 Available properties are:
 
     AcePath: URL or path to ACE javascript file
-             default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js
+             default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js
 
     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
            default: monokai
@@ -23,19 +23,20 @@ Available properties are:
                              default: true
 
     Autocompletion: Enable Autocompletion: none, basic (show on CTRL-Space) or live (show on typing)
-                    Note that "ext-language_tools.js" must be available alongside ace.js
+                    Note that "ext-language_tools.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-language_tools.js)
                     default: basic
 
     SettingsMenu: Add a settings menu accessible with CTR-Q (or CMD-Q)
-                  Note that "ext-settings_menu.js" must be available alongside ace.js
+                  Note that "ext-settings_menu.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-settings_menu.js)
                   default: false
 
     Spellcheck: Enable spellcheck
-                Note that "ext-spellcheck.js" must be available alongside ace.js
+                Note that "ext-spellcheck.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-spellcheck.js)
                 default: false
 
     Emmet: Enable emmet
-           Note that "ext-emmet.js" must be available alongside ace.js
+           Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)
+           It is recommended to disable ReplaceCTRLDKbdShortcut property when using Emmet (as it replace an Emmet shortcut CTRL-D)
            default: false
 
     ChunkDetectMIMEShebang: Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content)
