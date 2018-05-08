@@ -66,7 +66,7 @@
 
 
 $pluginName = "SimpleAceCodeEditor";
-
+$pluginVersion = "1.4.1-pl";
 
 /** Register RTE **/
 if ($modx->event->name == 'OnRichTextEditorRegister') {
@@ -414,11 +414,16 @@ JSSCRIPT;
     // Convert options to JSON object
     $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
     
+    // Generate cache busting query string
+    // Based on current plugin version + hash of all properties
+    $propertiesHash = md5("$AcePath $EmmetPath $AceTheme $AceReplaceCTRLDKbdShortcut $AceAutocompletion $AceSettingsMenu $AceSpellcheck $AceEmmet $AceChunkDetectMIMEShebang");
+    $CacheBustingQSValue = "?v=$pluginVersion-$propertiesHash";
+
     // Generate final script!
     $script = "";
     foreach($scriptPaths as $scriptPath) {
-        // Include each external files
-        $script .= "<script src='$scriptPath' type='text/javascript' charset='utf-8'></script>\n";
+        // Include file
+        $script .= "<script src='$scriptPath$CacheBustingQSValue' type='text/javascript' charset='utf-8'></script>\n";
     }
     
     // The script...
