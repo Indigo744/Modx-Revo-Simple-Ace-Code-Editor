@@ -6,9 +6,9 @@
 * 
 */
 
-modxSetHighlightRules = function(HighlightRules) {
-
-    HighlightRules.$rules['modxtag-comment'] = [
+modxCustomHighlightRules = function() {
+    
+    this.$rules['modxtag-comment'] = [
         {
             token : "comment.modx",
             regex : "[^\\[\\]]+",
@@ -27,7 +27,7 @@ modxSetHighlightRules = function(HighlightRules) {
             next: "pop"
         }
     ];
-    HighlightRules.$rules['modxtag-start'] = [
+    this.$rules['modxtag-start'] = [
         {
             token : ["cache-flag.variable.modx", "tag-token.variable.modx", "tag-name.variable.modx"],
             regex : "(!)?([%|*|~|\\+|\\$]|(?:\\+\\+)|(?:\\*#))?([-_a-zA-Z0-9\\.]+)",
@@ -64,7 +64,7 @@ modxSetHighlightRules = function(HighlightRules) {
         },
         {defaultToken: 'text.modx'}
     ];
-    HighlightRules.$rules['modxtag-propertyset'] = [
+    this.$rules['modxtag-propertyset'] = [
         {
             token : ['keyword.operator.modx', "support.class.modx"],
             regex : "(@)([-_a-zA-Z0-9\\.]+|\\[\\[.*?\\]\\])",
@@ -81,7 +81,7 @@ modxSetHighlightRules = function(HighlightRules) {
             next: "modxtag-filter"
         }
     ];
-    HighlightRules.$rules['modxtag-filter'] = [
+    this.$rules['modxtag-filter'] = [
         {
             token : 'filter-delimiter.keyword.operator.modx',
             regex : ":",
@@ -103,7 +103,7 @@ modxSetHighlightRules = function(HighlightRules) {
             regex : "\\s+"
         }
     ];
-    HighlightRules.$rules['modxtag-filter-eq'] = [
+    this.$rules['modxtag-filter-eq'] = [
         {
             token : ["keyword.operator.modx"],
             regex : "="
@@ -122,7 +122,7 @@ modxSetHighlightRules = function(HighlightRules) {
             next: "pop"
         }
     ];
-    HighlightRules.$rules["modxtag-property-string"] = [
+    this.$rules["modxtag-property-string"] = [
         {
             token : "entity.other.attribute-name.modx",
             regex: "&"
@@ -151,7 +151,7 @@ modxSetHighlightRules = function(HighlightRules) {
             regex : "\\s+"
         }
     ];
-    HighlightRules.$rules["modxtag-attribute-value"] = [
+    this.$rules["modxtag-attribute-value"] = [
         {
             token : "string.modx",
             regex : "[^`\\[]+",
@@ -172,7 +172,7 @@ modxSetHighlightRules = function(HighlightRules) {
             merge : true
         }
     ];
-    HighlightRules.$rules["modxtag-filter-value"] = [
+    this.$rules["modxtag-filter-value"] = [
         {
             token : "string.modx",
             regex : "[^`\\[]+",
@@ -195,8 +195,8 @@ modxSetHighlightRules = function(HighlightRules) {
     ];
 
     // add twig start tags to the HTML start tags
-    for (var rule in HighlightRules.$rules) {
-        HighlightRules.$rules[rule].unshift({
+    for (var rule in this.$rules) {
+        this.$rules[rule].unshift({
             token : "paren.lparen.comment.modx", // opening tag
             regex : "\\[\\[\\-",
             push : 'modxtag-comment',

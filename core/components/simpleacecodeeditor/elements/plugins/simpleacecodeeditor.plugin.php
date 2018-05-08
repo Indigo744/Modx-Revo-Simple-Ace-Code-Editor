@@ -331,26 +331,64 @@ if ($field) {
              * https://github.com/danyaPostfactum/modx-ace/blob/master/assets/components/ace/modx.texteditor.js
              */
             var createModxMixedMode = function(Mode) {
-                function ModxMixedMode() {
+                var oop = ace.require("ace/lib/oop");
+                
+                /* Create the new mixed mode */
+                var ModxMixedMode = function() {
                     Mode.call(this);
-                    var HighlightRules = this.HighlightRules;
-            
-                    function ModxMixedHighlightRules() {
-                        HighlightRules.call(this);
+                    
+                    // Save the parent rules to be able to call them later
+                    var parentHighlightRules = this.HighlightRules;
+                    
+                    /* Create the new mixed rules */
+                    var mixedHighlightRules = function() {
+                        // Set parent rules
+                        parentHighlightRules.call(this);
                         
-                        // Retrieve modx rules
-                        modxSetHighlightRules(this);
-            
+                        // Set modx rules (function available in file modx_highlight_rules.js already loaded)
+                        modxCustomHighlightRules.call(this);
+                        
+                        // Normalized!
                         this.normalizeRules();
                     }
-            
-                    ModxMixedHighlightRules.prototype = HighlightRules.prototype;
-            
-                    this.HighlightRules = ModxMixedHighlightRules;
+                    
+                    // Inherit prototype from parent rules
+                    oop.inherits(mixedHighlightRules, parentHighlightRules);
+                    
+                    // Set mixed highlight rules
+                    this.HighlightRules = mixedHighlightRules;
                 }
-                ModxMixedMode.prototype = Object.create(Mode.prototype, {
-                    constructor: {value: ModxMixedMode}
-                });
+                
+                // Inherit prototype from parent Mode
+                oop.inherits(ModxMixedMode, Mode);
+                
+                // Handle the case were a worker is defined in parent mode
+                if (Mode.prototype.createWorker) {
+                    ModxMixedMode.prototype.createWorker = function(session) {
+                        // Call parent without 'this'
+                        var worker = Mode.prototype.createWorker(session);
+                        if (worker) {
+                            // Replace onError function to handle modx tag
+                            worker.on("error", function(e) {
+                                var annotations = [];
+                                var idx_max = e.data.length;
+                                // Loop through errors, and silence errors when a modx tag [[ exists
+                                for(var i = 0 ; i < idx_max ; i++) {
+                                    // Get line
+                                    var line = session.getLine(e.data[i].row);
+                                    if (line.indexOf('[[') === -1) {
+                                        // No modx tag, add to annotations
+                                        annotations.push(e.data[i]);
+                                    }
+                                }
+                                session.setAnnotations(annotations);
+                            });
+                        }
+                        return worker;
+                    };
+                }
+                
+                // We're done. Return the new mixed mode
                 return new ModxMixedMode();
             };
             
