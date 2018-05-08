@@ -92,6 +92,13 @@ $properties = array(
         'options' => '',
     ),
     array(
+        'name' => 'EmmetPath',
+        'desc' => 'URL or path to Emmet javascript file (see https://github.com/cloud9ide/emmet-core)',
+        'type' => 'textfield',
+        'value' => "https://cloud9ide.github.io/emmet-core/emmet.js",
+        'options' => '',
+    ),
+    array(
         'name' => 'Emmet',
         'desc' => 'Enable emmet - Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)',
         'type' => 'combo-boolean',

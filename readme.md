@@ -61,7 +61,15 @@ Note that "ext-spellcheck.js" must be available alongside ace.js (will be retrie
 
 *default: `false`*
 
+**EmmetPath**: URL or path to Emmet js file
+
+For more information, see https://github.com/cloud9ide/emmet-core
+
+*default: `https://cloud9ide.github.io/emmet-core/emmet.js`*
+
 **Emmet**: Enable Emmet
+
+Note that Emmet JS file must be loaded first (see EmmetPath, it must be correctly set)
 
 Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)
 

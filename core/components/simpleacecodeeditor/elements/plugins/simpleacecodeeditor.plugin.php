@@ -34,8 +34,14 @@
  *                 Note that "ext-spellcheck.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-spellcheck.js)
  *                 default: false
  *
+ *     EmmetPath: URL or path to Emmet js file
+ *                For more information, see https://github.com/cloud9ide/emmet-core
+ *                default: https://cloud9ide.github.io/emmet-core/emmet.js
+ *
  *     Emmet: Enable Emmet
+ *            Note that Emmet JS file must be loaded first (see EmmetPath, it must be correctly set)
  *            Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)
+ *            It is recommended to disable ReplaceCTRLDKbdShortcut property when using Emmet (as it replace an Emmet shortcut CTRL-D)
  *            default: false
  *
  *     ChunkDetectMIMEShebang: Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content)
@@ -75,6 +81,7 @@ if ($modx->getOption('which_element_editor', null) !== $pluginName) {
 
 /** Get properties **/
 $AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, "https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"));
+$EmmetPath = $modx->getoption('EmmetPath', $scriptProperties, $modx->getOption($pluginName . '.EmmetPath', null, "https://cloud9ide.github.io/emmet-core/emmet.js"));
 $AceTheme = $modx->getoption('Theme', $scriptProperties, $modx->getOption($pluginName . '.Theme', null, 'monokai'));
 $AceReplaceCTRLDKbdShortcut = $modx->getoption('ReplaceCTRLDKbdShortcut', $scriptProperties, $modx->getOption($pluginName . '.ReplaceCTRDKbdShortcut', null, true));
 $AceAutocompletion = $modx->getoption('Autocompletion', $scriptProperties, $modx->getOption($pluginName . '.Autocompletion', null, 'basic'));
@@ -148,6 +155,7 @@ if ($AceSpellcheck == true) {
 /** Handle Emmet extension **/
 if ($AceEmmet == true) {
     $editorOptions['enableEmmet'] = true;
+    array_push($scriptPaths, $EmmetPath);
     array_push($scriptPaths, "$AceBasePath/ext-emmet.js");
 }
 
