@@ -109,7 +109,7 @@ if ($AceReplaceCTRLDKbdShortcut == true) {
             scrollIntoView: "cursor"
         });
         editor.commands.addCommand({
-            name: "duplicateSelection",
+            name: "Duplicate Selection",
             bindKey: {win: "Ctrl-D", mac: "Command-D"},
             exec: function(editor) { editor.duplicateSelection(); },
             scrollIntoView: "cursor",
@@ -455,9 +455,7 @@ JSSCRIPT;
             
             // Create div element for Ace
             var aceEditorDiv = document.createElement("div");
-            aceEditorDiv.style.position = 'absolute';
-            aceEditorDiv.style.width = '100%';
-            aceEditorDiv.style.height = '100%';
+            setEditorSize(aceEditorDiv);
             
             // Append to DOM before the textarea
             textarea.parentNode.insertBefore(aceEditorDiv, textarea);
@@ -468,10 +466,22 @@ JSSCRIPT;
             // Create Ace editor !
             var editor = ace.edit(aceEditorDiv);
             
-            // Ace Editor settings
-            
+            // Additional scripts
             {$editorAdditionalScript}
             
+            // Fullscreen toggle support
+            editor.commands.addCommand({
+                name: "Toggle Fullscreen",
+                bindKey: "F11",
+                exec: function(editor) {
+                    var dom = ace.require("ace/lib/dom");
+                    dom.toggleCssClass(editor.container, "fullScreen");
+                    setEditorSize(editor.container, dom.hasCssClass(editor.container, "fullScreen"));
+                    editor.resize();
+                }
+            });
+        
+            // Ace Editor settings
             editor.setOptions({$editorOptions});
             editor.renderer.setOptions({
                 theme: "ace/theme/{$AceTheme}"
@@ -508,6 +518,30 @@ JSSCRIPT;
                         tryToGetTextArea();
                     }
                 }, WAIT_BETWEEN_TRIES_MS);
+            }
+        }
+        
+        var setEditorSize = function(editorContainer, fullscreen) {
+            if (fullscreen) {
+                editorContainer.style.position = 'fixed';
+                editorContainer.style.top = '55px';
+                editorContainer.style.bottom = '0';
+                editorContainer.style.left = '0';
+                editorContainer.style.right = '0';
+                editorContainer.style['z-index'] = '10'; // Top right menu has z-index of 11
+                
+                editorContainer.style.width = null;
+                editorContainer.style.height = null;
+            } else {
+                editorContainer.style.position = 'absolute';
+                editorContainer.style.width = '100%';
+                editorContainer.style.height = '100%';
+                
+                editorContainer.style.top = null;
+                editorContainer.style.bottom = null;
+                editorContainer.style.left = null;
+                editorContainer.style.right = null;
+                editorContainer.style['z-index'] = null;
             }
         }
         
