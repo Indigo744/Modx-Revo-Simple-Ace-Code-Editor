@@ -1,7 +1,7 @@
 --------------------
 Extra: Simple Ace Code Editor
 --------------------
-Version: 1.4.0-pl
+Version: 1.4.1-pl
 Created: 08 May. 2018
 Since: 17 Feb. 2018
 Author: Indigo744 <https://github.com/Indigo744>
@@ -10,6 +10,19 @@ License: GNU GPLv3
 
 Integrates Ace Code Editor into MODx Revolution in a simple way.
 
+
+Features:
+
+    Dead simple. Really.
+    Works out of the box with sensible default
+    CTRL-D to duplicate
+    Auto completion on CTRL-SPACE
+    MODX syntax highlighting
+    Emmet integration
+    Full-screen support (F11 while cursor in editor)
+    Set a specific MIME type for you chunks (like a shebang)
+
+    
 Available properties are:
 
     AcePath: URL or path to ACE javascript file

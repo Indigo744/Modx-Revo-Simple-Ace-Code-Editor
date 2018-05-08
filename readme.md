@@ -7,7 +7,7 @@ It integrates [Ace Code Editor](https://ace.c9.io) into MODx Revolution in a sim
 
 It is available as a package in MODX Extra repository: https://modx.com/extras/package/simpleacecodeeditor
 
-__Current version__ (github): 1.4.0-pl
+__Current version__ (github): 1.4.1-pl
 __Current version in Modx Extra repository__: 1.1.0-pl
 
 ## Features
@@ -18,6 +18,7 @@ __Current version in Modx Extra repository__: 1.1.0-pl
  * Auto completion on CTRL-SPACE
  * MODX syntax highlighting
  * Emmet integration
+ * Full-screen support (F11 while cursor in editor)
  * Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
 

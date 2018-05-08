@@ -11,7 +11,7 @@ if ($pluginid= $object->get('id')) {
         case xPDOTransport::ACTION_INSTALL:
         case xPDOTransport::ACTION_UPGRADE:
             $object->xpdo->log(xPDO::LOG_LEVEL_INFO,'Attempting to set which_element_editor setting to SimpleAceCodeEditor.');
-            // set CKEditor as default element editor
+            // set SimpleAceCodeEditor as default element editor
             $setting = $object->xpdo->getObject('modSystemSetting',array('key' => 'which_element_editor'));
             if ($setting) {
                 $setting->set('value','SimpleAceCodeEditor');
@@ -23,10 +23,6 @@ if ($pluginid= $object->get('id')) {
             $success= true;
             break;
     }
-    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-        case xPDOTransport::ACTION_UPGRADE:
-            break;
-	}
 }
 
 return $success;

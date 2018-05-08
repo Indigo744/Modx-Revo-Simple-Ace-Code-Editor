@@ -1,5 +1,10 @@
 
 08 May 2018 - Indigo74
+Version 1.4.1
+ * Added cache busting for external JS files
+ * Added fullscreen support (uses F11)
+ 
+08 May 2018 - Indigo74
 Version 1.4.0
  * Added property EmmetPath
  * Fix: Emmet feature was missing the Emmet JS file
