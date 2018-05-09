@@ -7,8 +7,10 @@ It integrates [Ace Code Editor](https://ace.c9.io) into MODx Revolution in a sim
 
 It is available as a package in MODX Extra repository: https://modx.com/extras/package/simpleacecodeeditor
 
-__Current version__ (github): 1.4.2-pl
+__Current version__ (github): 1.4.3-pl
+
 __Current version in Modx Extra repository__: 1.1.0-pl
+
 
 ## Features
 
@@ -22,11 +24,13 @@ __Current version in Modx Extra repository__: 1.1.0-pl
  * Any syntax highlighter for your chunks! Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
 
+   
 ## Install
 
 It is recommended to install from [MODX Extra repository](https://modx.com/extras/package/simpleacecodeeditor).
 
 You can also upload manually the transport package (found in `_dist` folder) to your MODX installation.
+
 
 ## Plugin properties
 
@@ -37,6 +41,7 @@ Note that it is recommended to create a new Property Set instead of editing the 
 
 *default: `https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js`*
 
+
 **Theme**: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
 
 Bright themes: `chrome`, `clouds`, `crimson_editor`, `dawn`, `dreamweaver`, `eclipse`, `github`, `iplastic`, `solarized_light`, `textmate`, `tomorrow`, `xcode`, `kuroir`, `katzenmilch`, `sqlserver`
@@ -45,14 +50,17 @@ Dark themes: `ambiance`, `chaos`, `clouds_midnight`, `dracula`, `cobalt`, `gruvb
 
 *default: `monokai`*
 
+
 **ReplaceCTRLDKbdShortcut**: Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action, which is to duplicate the current line or selection (instead of deleting, which is the default behavior)
 
 *default: `true`*
+
 
 **Autocompletion**: Enable Auto-completion: none, basic (show on CTRL-Space) or live (show on typing).
 Note that "ext-language_tools.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-language_tools.js)
 
 *default: `basic`*
+
 
 **SettingsMenu**: Add a settings menu accessible with CTR-Q (or CMD-Q)
 
@@ -60,17 +68,20 @@ Note that "ext-settings_menu.js" must be available alongside ace.js (will be ret
   
 *default: `false`*
 
+
 **Spellcheck**: Enable spell-check
 
 Note that "ext-spellcheck.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-spellcheck.js)
 
 *default: `false`*
 
+
 **EmmetPath**: URL or path to Emmet js file
 
 For more information, see https://github.com/cloud9ide/emmet-core
 
 *default: `https://cloud9ide.github.io/emmet-core/emmet.js`*
+
 
 **Emmet**: Enable Emmet
 
@@ -81,6 +92,16 @@ Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve fr
 It is recommended to disable ReplaceCTRLDKbdShortcut property when using Emmet (as it replace an Emmet shortcut CTRL-D)
    
 *default: `false`*
+
+
+**AcePrintMarginColumn**: Print margin column position
+
+Set the character position of the print margin (for instance useful if you like to code with 80 chars wide max)
+
+Set to 0 to disable it completely
+
+*default: `0`*
+
 
 **ChunkDetectMIMEShebang**: Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content).
 

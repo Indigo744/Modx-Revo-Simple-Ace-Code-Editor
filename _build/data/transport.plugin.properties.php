@@ -106,6 +106,13 @@ $properties = array(
         'options' => '',
     ),
     array(
+        'name' => 'AcePrintMarginColumn',
+        'desc' => 'Print margin column position - Set the character position of the print margin (for instance useful if you like to code with 80 chars wide max) - Set to 0 to disable',
+        'type' => 'numberfield',
+        'value' => '0',
+        'options' => '',
+    ),
+    array(
         'name' => 'ChunkDetectMIMEShebang',
         'desc' => "Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content) - See README for supported MIME values",
         'type' => 'combo-boolean',

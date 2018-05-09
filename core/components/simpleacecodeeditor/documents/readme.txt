@@ -1,7 +1,7 @@
 --------------------
 Extra: Simple Ace Code Editor
 --------------------
-Version: 1.4.2-pl
+Version: 1.4.3-pl
 Created: 09 May. 2018
 Since: 17 Feb. 2018
 Author: Indigo744 <https://github.com/Indigo744>
@@ -56,6 +56,11 @@ Available properties are:
            Note that "ext-emmet.js" must be available alongside ace.js (will be retrieve from <AcePath>/ext-emmet.js)
            It is recommended to disable ReplaceCTRLDKbdShortcut property when using Emmet (as it replace an Emmet shortcut CTRL-D)
            default: false
+
+    AcePrintMarginColumn: Print margin column position
+                          Set the character position of the print margin (for instance useful if you like to code with 80 chars wide max)
+                          Set to 0 to disable it completely
+                          default: 0 (disabled)
 
     ChunkDetectMIMEShebang: Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content)
                             This is particularly useful if your chunk contains directly JS, or SASS, or anything different than HTML...
