@@ -45,6 +45,11 @@
  *            It is recommended to disable ReplaceCTRLDKbdShortcut property when using Emmet (as it replace an Emmet shortcut CTRL-D)
  *            default: false
  *
+ *     AcePrintMarginColumn: Print margin column position
+ *                           Set the character position of the print margin (for instance useful if you like to code with 80 chars wide max)
+ *                           Set to 0 to disable it completely
+ *                           default: 0 (disabled)
+ *
  *     ChunkDetectMIMEShebang: Enable 'shebang-style' MIME detection for chunks (in description or in the first line of chunk content)
  *                             This is particularly useful if your chunk contains directly JS, or SASS, or anything different than HTML...
  *                             Supported MIME values are text/x-smarty, text/html, application/xhtml+xml, text/css, text/x-scss, 
@@ -99,6 +104,7 @@ $AceAutocompletion = $modx->getoption('Autocompletion', $scriptProperties, $modx
 $AceSettingsMenu = $modx->getoption('SettingsMenu', $scriptProperties, $modx->getOption($pluginName . '.SettingsMenu', null, false));
 $AceSpellcheck = $modx->getoption('Spellcheck', $scriptProperties, $modx->getOption($pluginName . '.Spellcheck', null, false));
 $AceEmmet = $modx->getoption('Emmet', $scriptProperties, $modx->getOption($pluginName . '.Emmet', null, false));
+$AcePrintMarginColumn = $modx->getoption('AcePrintMarginColumn', $scriptProperties, $modx->getOption($pluginName . '.AcePrintMarginColumn', null, 0));
 $AceChunkDetectMIMEShebang = $modx->getoption('ChunkDetectMIMEShebang', $scriptProperties, $modx->getOption($pluginName . '.ChunkDetectMIMEShebang', null, true));
 
 /** Inits script options **/
@@ -106,6 +112,11 @@ $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($plu
 $AceBasePath = dirname($AcePath);
 $scriptPaths = array($AcePath);
 $editorOptions = array();
+$rendererOptions = array(
+    'theme' => "ace/theme/$AceTheme",
+    'showPrintMargin' => $AcePrintMarginColumn > 0 ? true : false,
+    'printMarginColumn' => $AcePrintMarginColumn > 0 ? $AcePrintMarginColumn : 80,
+);
 $editorAdditionalScript = "\n";
 
 /** Handle proper CTRL-D **/
@@ -424,6 +435,7 @@ JSSCRIPT;
     
     // Convert options to JSON object
     $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
+    $rendererOptions = json_encode($rendererOptions, JSON_FORCE_OBJECT);
     
     // Generate cache busting query string
     // Based on current plugin version + hash of all properties
@@ -494,9 +506,7 @@ JSSCRIPT;
         
             // Ace Editor settings
             editor.setOptions({$editorOptions});
-            editor.renderer.setOptions({
-                theme: "ace/theme/{$AceTheme}"
-            });
+            editor.renderer.setOptions({$rendererOptions});
             
             {$setModeScript}
             
