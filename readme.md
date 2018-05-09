@@ -16,10 +16,12 @@ __Current version in Modx Extra repository__: 1.1.0-pl
 
  * Dead simple. Really.
  * Works out of the box with sensible default
- * CTRL-D to duplicate
- * Auto completion on CTRL-SPACE
+ * Uses latest Ace version 1.3.3 (want another version? Modify the URL!)
+ * Load Ace library (and extensions) from CDNJS (configurable)
+ * CTRL-D to duplicate (configurable)
+ * Auto completion on CTRL-SPACE (configurable)
  * MODX syntax highlighting
- * Emmet integration
+ * Emmet integration (configurable)
  * Full-screen support (F11 while cursor in editor)
  * Any syntax highlighter for your chunks! Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
