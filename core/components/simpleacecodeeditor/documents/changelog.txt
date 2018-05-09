@@ -1,4 +1,9 @@
 
+09 May 2018 - Indigo74
+Version 1.4.2
+ * Added Modx cache refresh when installing/upgrading and saving plugin
+ * Upgrading will no longer replace property sets defined for events
+ 
 08 May 2018 - Indigo74
 Version 1.4.1
  * Added cache busting for external JS files
