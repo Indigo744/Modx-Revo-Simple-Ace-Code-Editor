@@ -7,7 +7,7 @@ It integrates [Ace Code Editor](https://ace.c9.io) into MODx Revolution in a sim
 
 It is available as a package in MODX Extra repository: https://modx.com/extras/package/simpleacecodeeditor
 
-__Current version__ (github): 1.4.1-pl
+__Current version__ (github): 1.4.2-pl
 __Current version in Modx Extra repository__: 1.1.0-pl
 
 ## Features
