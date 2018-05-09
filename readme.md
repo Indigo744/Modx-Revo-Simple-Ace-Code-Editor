@@ -19,7 +19,7 @@ __Current version in Modx Extra repository__: 1.1.0-pl
  * MODX syntax highlighting
  * Emmet integration
  * Full-screen support (F11 while cursor in editor)
- * Set a specific MIME type for you chunks (like a shebang)
+ * Any syntax highlighter for your chunks! Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
 
 ## Install
