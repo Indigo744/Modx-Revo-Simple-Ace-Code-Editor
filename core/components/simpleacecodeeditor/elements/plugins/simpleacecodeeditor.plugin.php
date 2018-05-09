@@ -486,6 +486,9 @@ JSSCRIPT;
             // Hide textarea
             textarea.style.visibility = 'hidden';
             
+            // Useful dom lib
+            var dom = ace.require("ace/lib/dom");
+            
             // Create Ace editor !
             var editor = ace.edit(aceEditorDiv);
             
@@ -497,11 +500,37 @@ JSSCRIPT;
                 name: "Toggle Fullscreen",
                 bindKey: "F11",
                 exec: function(editor) {
-                    var dom = ace.require("ace/lib/dom");
+                    // Toggle class
                     dom.toggleCssClass(editor.container, "fullScreen");
-                    setEditorSize(editor.container, dom.hasCssClass(editor.container, "fullScreen"));
+                    // Get current situation
+                    var isFullScreen = dom.hasCssClass(editor.container, "fullScreen");
+                    // Set size and resize as needed
+                    setEditorSize(editor.container, isFullScreen);
                     editor.resize();
+                    // Handle searchbox position as needed
+                    handleSearchBoxPosition(editor, isFullScreen);
                 }
+            });
+            
+            // Search while fullscreen support
+            editor.commands.addCommand({
+                name: 'CustomFind',
+                bindKey: {win: 'Ctrl-F', mac: 'Command-F'},
+                exec: function(editor) { handleSearchBox(editor); }
+            });
+            
+            // Replace while fullscreen support
+            editor.commands.addCommand({
+                name: 'CustomReplace',
+                bindKey: {win: 'Ctrl-H', mac: 'Command-Option-F'},
+                exec: function(editor) { handleSearchBox(editor, true); }
+            });
+            
+            // Additionnal Replace command
+            editor.commands.addCommand({
+                name: 'additionnalReplace',
+                bindKey: {win: 'Ctrl-R', mac: 'Command-R'},
+                exec: function(editor) { handleSearchBox(editor, true); }
             });
         
             // Ace Editor settings
@@ -542,8 +571,11 @@ JSSCRIPT;
             }
         }
         
-        var setEditorSize = function(editorContainer, fullscreen) {
-            if (fullscreen) {
+        /** 
+         * Function to set editor size between fullscreen or not
+         */
+        var setEditorSize = function(editorContainer, isFullScreen) {
+            if (isFullScreen) {
                 editorContainer.style.position = 'fixed';
                 editorContainer.style.top = '55px';
                 editorContainer.style.bottom = '0';
@@ -563,6 +595,36 @@ JSSCRIPT;
                 editorContainer.style.left = null;
                 editorContainer.style.right = null;
                 editorContainer.style['z-index'] = null;
+            }
+        }
+        
+        /** 
+         * Function to handle searchbox (show/hide)
+         */
+        var handleSearchBox = function(editor, isReplace) {
+            // Load extension
+            ace.config.loadModule("ace/ext/searchbox", function(e) {
+                // Launch searchbox
+                e.Search(editor, isReplace);
+                // Handle searchbox position
+                handleSearchBoxPosition(editor, dom.hasCssClass(editor.container, "fullScreen"));
+            });
+        }
+        
+        /** 
+         * Function to handle searchbox position depending on fullscreen or not
+         */
+        var handleSearchBoxPosition = function(editor, isFullScreen) {
+            if (!editor.searchBox) return;
+            
+            if (isFullScreen) {
+                // If fullscreen, put searchbox on bottom
+                editor.searchBox.element.style.top = 'auto';
+                editor.searchBox.element.style.bottom = '0';
+            } else {
+                // If not, unset any specific style value previously set
+                editor.searchBox.element.style.top = null;
+                editor.searchBox.element.style.bottom = null;
             }
         }
         
