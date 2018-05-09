@@ -9,6 +9,9 @@
 function getFileContentsWithoutPHPTags($filename) {
     $o = file_get_contents($filename);
     $o = trim(str_replace(array('<?php','?>'),'',$o));
+    $o = str_replace('__PKG_NAME__',PKG_NAME,$o);
+    $o = str_replace('__PKG_VERSION__',PKG_VERSION,$o);
+    $o = str_replace('__PKG_RELEASE__',PKG_RELEASE,$o);
     return $o;
 }
 

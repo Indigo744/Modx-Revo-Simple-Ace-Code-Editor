@@ -64,9 +64,10 @@
  * @var Ace $ace
  */
 
+/** Package information (set at build) **/
+$pluginName = '__PKG_NAME__';
+$pluginVersion = '__PKG_VERSION__-__PKG_RELEASE__';
 
-$pluginName = "SimpleAceCodeEditor";
-$pluginVersion = "1.4.1-pl";
 
 /** Register RTE **/
 if ($modx->event->name == 'OnRichTextEditorRegister') {
