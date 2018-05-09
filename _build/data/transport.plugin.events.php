@@ -52,4 +52,9 @@ $events['OnDocFormPrerender']->fromArray(array(
     'event' => 'OnDocFormPrerender'
 ),'',true,true);
 
+$events['OnPluginSave'] = $modx->newObject('modPluginEvent');
+$events['OnPluginSave']->fromArray(array(
+    'event' => 'OnPluginSave'
+),'',true,true);
+
 return $events;

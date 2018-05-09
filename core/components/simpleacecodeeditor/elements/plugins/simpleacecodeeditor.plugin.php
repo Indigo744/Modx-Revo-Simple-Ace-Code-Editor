@@ -9,6 +9,7 @@
  * Events: OnManagerPageBeforeRender, OnRichTextEditorRegister, OnSnipFormPrerender,
  * OnTempFormPrerender, OnChunkFormPrerender, OnPluginFormPrerender,
  * OnFileCreateFormPrerender, OnFileEditFormPrerender, OnDocFormPrerender
+ * and OnPluginSave to force cache refresh
  * 
  * Properties:
  *
@@ -68,6 +69,15 @@
 $pluginName = '__PKG_NAME__';
 $pluginVersion = '__PKG_VERSION__-__PKG_RELEASE__';
 
+/** Force mgr refresh on plugin save **/
+if ($modx->event->name == 'OnPluginSave') {
+    if ($plugin->get('name') === $pluginName) {
+        $modx->cacheManager->refresh(array(
+            'context_settings' => array('contexts' => array('mgr'))
+        ));
+    }
+    return;
+}
 
 /** Register RTE **/
 if ($modx->event->name == 'OnRichTextEditorRegister') {
