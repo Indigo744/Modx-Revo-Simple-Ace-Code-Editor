@@ -1,8 +1,8 @@
 --------------------
 Extra: Simple Ace Code Editor
 --------------------
-Version: 1.4.3-pl
-Created: 09 May. 2018
+Version: 1.4.4-pl
+Created: 15 May. 2018
 Since: 17 Feb. 2018
 Author: Indigo744 <https://github.com/Indigo744>
 Based on the work of Danil Kostin <danya.postfactum@gmail.com> of Ace extra

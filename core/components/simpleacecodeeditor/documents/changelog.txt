@@ -1,4 +1,8 @@
 
+15 May 2018 - Indigo74
+Version 1.4.4
+ * Fix search bug in Chrome
+ 
 09 May 2018 - Indigo74
 Version 1.4.3
  * Fix search form not visible in fullscreen
