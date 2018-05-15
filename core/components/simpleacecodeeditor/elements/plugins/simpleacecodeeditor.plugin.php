@@ -467,6 +467,9 @@ JSSCRIPT;
         // Will hold the textarea DOM element
         var textarea;
         
+        // Useful dom lib
+        var dom = ace.require("ace/lib/dom");
+        
         /** 
          * Function Init ACE editor
          * Uses textarea variable
@@ -485,9 +488,6 @@ JSSCRIPT;
             
             // Hide textarea
             textarea.style.visibility = 'hidden';
-            
-            // Useful dom lib
-            var dom = ace.require("ace/lib/dom");
             
             // Create Ace editor !
             var editor = ace.edit(aceEditorDiv);
