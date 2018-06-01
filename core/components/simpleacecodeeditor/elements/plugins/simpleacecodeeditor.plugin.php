@@ -121,7 +121,7 @@ $editorAdditionalScript = "\n";
 
 /** Handle proper CTRL-D **/
 if ($AceReplaceCTRLDKbdShortcut == true) {
-    $editorAdditionalScript .= <<<JSSCRIPT
+    $editorAdditionalScript .= <<<JS
         editor.commands.removeCommand('del');
         editor.commands.addCommand({
             name: "del",
@@ -137,7 +137,7 @@ if ($AceReplaceCTRLDKbdShortcut == true) {
             scrollIntoView: "cursor",
             multiSelectAction: "forEach"
         });
-JSSCRIPT;
+JS;
 }
 
 /** Handle autocompletion extension **/
@@ -149,7 +149,7 @@ if ($AceAutocompletion === 'live' || $AceAutocompletion === 'basic') {
 
 /** Handle settings_menu extension **/
 if ($AceSettingsMenu == true) {
-    $editorAdditionalScript .= <<<JSSCRIPT
+    $editorAdditionalScript .= <<<JS
         var RequiresettingsMenu = ace.require('ace/ext/settings_menu');
         if (RequiresettingsMenu) {
             // Init with current editor
@@ -164,7 +164,7 @@ if ($AceSettingsMenu == true) {
         		readOnly: true
         	}]);
         }
-JSSCRIPT;
+JS;
     array_push($scriptPaths, "$AceBasePath/ext-settings_menu.js");
 } 
 
@@ -235,7 +235,7 @@ $extensionMap = array(
     'ini'       => 'text/x-ini',
     'ejs'       => 'text/x-ejs',
     'md'        => 'text/markdown',
-    'sql'       => 'application/x-perl',
+    'pl'        => 'application/x-perl',
 );
 
 
@@ -346,7 +346,7 @@ if ($field) {
         
         array_push($scriptPaths, "$AceAssetsUrl/modx_highlight_rules.js");
         
-        $setModeScript = <<<JSSCRIPT
+        $setModeScript = <<<JS
             /** 
              * Function to create a mixed mode with MODX tags
              * Based on the work of danyaPostfactum, see link below
@@ -372,14 +372,14 @@ if ($field) {
                         
                         // Normalized!
                         this.normalizeRules();
-                    }
+                    };
                     
                     // Inherit prototype from parent rules
                     oop.inherits(mixedHighlightRules, parentHighlightRules);
                     
                     // Set mixed highlight rules
                     this.HighlightRules = mixedHighlightRules;
-                }
+                };
                 
                 // Inherit prototype from parent Mode
                 oop.inherits(ModxMixedMode, Mode);
@@ -423,10 +423,10 @@ if ($field) {
                     var mode = createModxMixedMode(module.Mode);
                     editor.session.setMode(mode);
                 }.bind(this));
-            }
+            };
                 
             setMixedMode(editor, "{$mode}");
-JSSCRIPT;
+JS;
 
     } else {
         // No mixed mode, simply set mode
@@ -450,7 +450,7 @@ JSSCRIPT;
     }
     
     // The script...
-    $script .= <<<JSSCRIPT
+    $script .= <<<HTML
 <script type="text/javascript">
     (function() {
         "use strict";
@@ -464,9 +464,6 @@ JSSCRIPT;
         // Hold the current try number
         var currentTry = 0;
         
-        // Will hold the textarea DOM element
-        var textarea;
-        
         // Useful dom lib
         var dom = ace.require("ace/lib/dom");
         
@@ -474,7 +471,7 @@ JSSCRIPT;
          * Function Init ACE editor
          * Uses textarea variable
          */
-        var initAceCodeEditor = function() {
+        var initAceCodeEditor = function(textarea) {
             // Set parent element to relative position
             // Hence the Ace Editor div absolute positionning will be relative to it
             textarea.parentNode.style.position = 'relative';
@@ -546,7 +543,7 @@ JSSCRIPT;
                 textarea.value = editor.getSession().getValue();
             });
             
-        }
+        };
         
         /** 
          * Function search for the textarea
@@ -555,7 +552,7 @@ JSSCRIPT;
          */
         var tryToGetTextArea = function() {
             // Try to find the textarea
-            textarea = document.getElementById("{$field}");
+            var textarea = document.getElementById("{$field}");
             
             if (textarea) {
                 // Element found, init!
@@ -569,7 +566,7 @@ JSSCRIPT;
                     }
                 }, WAIT_BETWEEN_TRIES_MS);
             }
-        }
+        };
         
         /** 
          * Function to set editor size between fullscreen or not
@@ -596,7 +593,7 @@ JSSCRIPT;
                 editorContainer.style.right = null;
                 editorContainer.style['z-index'] = null;
             }
-        }
+        };
         
         /** 
          * Function to handle searchbox (show/hide)
@@ -609,7 +606,7 @@ JSSCRIPT;
                 // Handle searchbox position
                 handleSearchBoxPosition(editor, dom.hasCssClass(editor.container, "fullScreen"));
             });
-        }
+        };
         
         /** 
          * Function to handle searchbox position depending on fullscreen or not
@@ -626,13 +623,13 @@ JSSCRIPT;
                 editor.searchBox.element.style.top = null;
                 editor.searchBox.element.style.bottom = null;
             }
-        }
+        };
         
         // Start searching!
         tryToGetTextArea();
     })();
 </script>
-JSSCRIPT;
+HTML;
 
     $modx->controller->addHtml($script);
 }
