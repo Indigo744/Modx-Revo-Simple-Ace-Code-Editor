@@ -496,7 +496,7 @@ JS;
             // Fullscreen toggle support
             editor.commands.addCommand({
                 name: "Toggle Fullscreen",
-                bindKey: $AceToggleFullScreenKeyBinding,
+                bindKey: "$AceToggleFullScreenKeyBinding",
                 exec: function(editor) {
                     // Toggle class
                     dom.toggleCssClass(editor.container, "fullScreen");
