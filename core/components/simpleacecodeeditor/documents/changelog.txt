@@ -1,4 +1,10 @@
 
+25 Sept. 2018 - Indigo74
+Version 1.4.5
+ * Fix some small bug
+ * Added ToggleFullScreenKeyBinding property to allow defining custom key binding for fullscreen
+ * Updated default CDNJS URL to ACE 1.4.1
+
 15 May 2018 - Indigo74
 Version 1.4.4
  * Fix search bug in Chrome
