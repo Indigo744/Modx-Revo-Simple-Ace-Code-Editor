@@ -10,7 +10,7 @@ $properties = array(
         'name' => 'AcePath',
         'desc' => 'URL or path to ACE javascript file (and extensions)',
         'type' => 'textfield',
-        'value' => "https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js",
+        'value' => "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js",
         'options' => '',
     ),
     array(

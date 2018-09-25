@@ -14,7 +14,7 @@
  * Properties:
  *
  *     AcePath: URL or path to ACE javascript file
- *              default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js
+ *              default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js
  *
  *     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
  *            default: monokai
@@ -96,7 +96,7 @@ if ($modx->getOption('which_element_editor', null) !== $pluginName) {
 }
 
 /** Get properties **/
-$AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, "https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"));
+$AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"));
 $EmmetPath = $modx->getoption('EmmetPath', $scriptProperties, $modx->getOption($pluginName . '.EmmetPath', null, "https://cloud9ide.github.io/emmet-core/emmet.js"));
 $AceTheme = $modx->getoption('Theme', $scriptProperties, $modx->getOption($pluginName . '.Theme', null, 'monokai'));
 $AceReplaceCTRLDKbdShortcut = $modx->getoption('ReplaceCTRLDKbdShortcut', $scriptProperties, $modx->getOption($pluginName . '.ReplaceCTRDKbdShortcut', null, true));

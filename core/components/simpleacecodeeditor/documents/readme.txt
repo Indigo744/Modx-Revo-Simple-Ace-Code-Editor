@@ -26,7 +26,7 @@ Features:
 Available properties are:
 
     AcePath: URL or path to ACE javascript file
-             default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js
+             default: https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js
 
     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
            default: monokai

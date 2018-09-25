@@ -16,7 +16,7 @@ __Current version in Modx Extra repository__: 1.4.4-pl
 
  * Dead simple. Really.
  * Works out of the box with sensible default
- * Uses latest Ace version 1.3.3 (want another version? Modify the URL!)
+ * Uses latest Ace version 1.4.1 (want another version? Modify the URL!)
  * Load Ace library (and extensions) from CDNJS (configurable)
  * CTRL-D to duplicate (configurable)
  * Auto completion on CTRL-SPACE (configurable)
@@ -41,7 +41,7 @@ The plugin offers several useful properties.
 Note that it is recommended to create a new Property Set instead of editing the default one.
 **AcePath**: URL or path to ACE javascript file
 
-*default: `https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js`*
+*default: `https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js`*
 
 
 **Theme**: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
