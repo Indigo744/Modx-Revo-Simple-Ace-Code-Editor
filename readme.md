@@ -114,6 +114,11 @@ See chapter "MIME detection for Chunks" below.
 *default: `true`*
 
 
+**ToggleFullScreenKeyBinding**: Key binding used to toggle editor fullscreen (example: Ctrl-P or F11 or anything you want)
+
+*default: `F11`*
+
+
 ## MIME detection
 
 When the editor is initialized, a proper mode (i.e. syntax highlighting) is picked based on several rules.

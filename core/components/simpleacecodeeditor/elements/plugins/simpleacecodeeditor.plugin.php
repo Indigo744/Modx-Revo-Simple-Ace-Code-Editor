@@ -106,6 +106,7 @@ $AceSpellcheck = $modx->getoption('Spellcheck', $scriptProperties, $modx->getOpt
 $AceEmmet = $modx->getoption('Emmet', $scriptProperties, $modx->getOption($pluginName . '.Emmet', null, false));
 $AcePrintMarginColumn = $modx->getoption('AcePrintMarginColumn', $scriptProperties, $modx->getOption($pluginName . '.AcePrintMarginColumn', null, 0));
 $AceChunkDetectMIMEShebang = $modx->getoption('ChunkDetectMIMEShebang', $scriptProperties, $modx->getOption($pluginName . '.ChunkDetectMIMEShebang', null, true));
+$AceToggleFullScreenKeyBinding = $modx->getoption('ToggleFullScreenKeyBinding', $scriptProperties, $modx->getOption($pluginName . '.ToggleFullScreenKeyBinding', null, "F11"));
 
 /** Inits script options **/
 $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
@@ -495,7 +496,7 @@ JS;
             // Fullscreen toggle support
             editor.commands.addCommand({
                 name: "Toggle Fullscreen",
-                bindKey: "F11",
+                bindKey: $AceToggleFullScreenKeyBinding,
                 exec: function(editor) {
                     // Toggle class
                     dom.toggleCssClass(editor.container, "fullScreen");

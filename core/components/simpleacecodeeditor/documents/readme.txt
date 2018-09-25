@@ -19,7 +19,7 @@ Features:
     Auto completion on CTRL-SPACE
     MODX syntax highlighting
     Emmet integration
-    Full-screen support (F11 while cursor in editor)
+    Full-screen support (F11 while cursor in editor, key binding can be customized)
     Set a specific MIME type for you chunks (like a shebang)
 
     

@@ -119,5 +119,12 @@ $properties = array(
         'value' => '1',
         'options' => '',
     ),
+    array(
+        'name' => 'ToggleFullScreenKeyBinding',
+        'desc' => "Key binding used to toggle editor fullscreen (example: Ctrl-P or F11 or anything you want)",
+        'type' => 'textfield',
+        'value' => 'F11',
+        'options' => '',
+    ),
 );
 return $properties;
