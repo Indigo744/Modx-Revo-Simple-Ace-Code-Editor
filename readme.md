@@ -151,14 +151,14 @@ Here is how a file extension is mapped to its MIME type:
  * __`.php`__: `application/x-php`
  * __`.sql`__: `text/x-sql`
  * __`.txt`__: `text/plain`
- * __`htaccess`__: `application/x-extension-htaccess`
- * __`coffee`__: `application/vnd.coffeescript`
- * __`litcoffee`__: `application/vnd.coffeescript`
- * __`ts`__: `application/x-typescript`
- * __`ini`__: `text/x-ini`
- * __`ejs`__: `text/x-ejs`
- * __`md`__: `text/markdown`
- * __`sql`__: `application/x-perl`
+ * __`.htaccess`__: `application/x-extension-htaccess`
+ * __`.coffee`__: `application/vnd.coffeescript`
+ * __`.litcoffee`__: `application/vnd.coffeescript`
+ * __`.ts`__: `application/x-typescript`
+ * __`.ini`__: `text/x-ini`
+ * __`.ejs`__: `text/x-ejs`
+ * __`.md`__: `text/markdown`
+ * __`.pl`__: `application/x-perl`
 
  
 ## Supported mode (syntax highlighting)
