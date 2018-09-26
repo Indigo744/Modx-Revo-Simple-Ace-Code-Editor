@@ -116,6 +116,8 @@ See chapter "MIME detection for Chunks" below.
 
 **ToggleFullScreenKeyBinding**: Key binding used to toggle editor fullscreen (example: Ctrl-P or F11 or anything you want)
 
+See [these binding examples](https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts) for the key syntax.
+
 *default: `F11`*
 
 
