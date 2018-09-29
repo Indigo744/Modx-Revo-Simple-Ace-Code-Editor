@@ -57,6 +57,9 @@
  *                                                       application/javascript, application/json, text/x-php, application/x-php, text/x-sql, 
  *                                                       text/x-markdown, text/plain, text/x-twig
  *                             default: true
+ *
+ *     ToggleFullScreenKeyBinding: Key binding used to toggle editor fullscreen (example: Ctrl-P or F11 or anything you want)
+ *                                 default: F11
  * 
  *
  * If you want to edit a property, create your own property set first.
