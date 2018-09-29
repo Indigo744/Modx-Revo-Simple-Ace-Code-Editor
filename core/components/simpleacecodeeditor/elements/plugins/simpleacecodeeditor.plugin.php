@@ -492,22 +492,15 @@ JS;
             
             // Additional scripts
             {$editorAdditionalScript}
+
+            // Create fullscreen toggle button
+            var fullscreenButton = createFullScreenButton(editor, aceEditorDiv);
             
             // Fullscreen toggle support
             editor.commands.addCommand({
                 name: "Toggle Fullscreen",
                 bindKey: "$AceToggleFullScreenKeyBinding",
-                exec: function(editor) {
-                    // Toggle class
-                    dom.toggleCssClass(editor.container, "fullScreen");
-                    // Get current situation
-                    var isFullScreen = dom.hasCssClass(editor.container, "fullScreen");
-                    // Set size and resize as needed
-                    setEditorSize(editor.container, isFullScreen);
-                    editor.resize();
-                    // Handle searchbox position as needed
-                    handleSearchBoxPosition(editor, isFullScreen);
-                }
+                exec: function(editor) { handleFullScreen(editor, fullscreenButton); }
             });
             
             // Search while fullscreen support
@@ -594,6 +587,84 @@ JS;
                 editorContainer.style.right = null;
                 editorContainer.style['z-index'] = null;
             }
+        };
+
+        /** 
+         * Function to create the fullscreen button toggle
+         */
+        var createFullScreenButton = function(editor, aceEditorDiv) {
+            var fullscreenButton = document.createElement("button");
+            fullscreenButton.innerHTML = "Fullscreen";
+            fullscreenButton.id = 'btnSimpleAceCodeEditorToggleFullScreen';
+            fullscreenButton.type = 'button';
+            fullscreenButton.style.height = "24px";
+            fullscreenButton.style.border = "0";
+            fullscreenButton.style.margin = "0";
+            fullscreenButton.style.padding = "0 8px";
+            fullscreenButton.style.fontSize = "12px";
+            fullscreenButton.style.background = "#099890";
+            fullscreenButton.style.color = "white";
+            fullscreenButton.style.cursor = "pointer";
+            fullscreenButton.title = "Toggle Ace editor fullscreen";
+
+            handleFullScreenButtonPosition(fullscreenButton, false);
+
+            fullscreenButton.onclick = function() { handleFullScreen(editor, fullscreenButton); };
+
+            // Append to DOM before the editor
+            aceEditorDiv.parentNode.insertBefore(fullscreenButton, aceEditorDiv);
+
+            return fullscreenButton;
+        };
+        
+        /** 
+         * Function to handle fullscreen button position
+         */
+        var handleFullScreenButtonPosition = function(fullscreenButton, isFullScreen) {
+            if (isFullScreen) {
+                fullscreenButton.style.position = 'fixed';
+                fullscreenButton.style.right = '35px';
+                fullscreenButton.style['z-index'] = '11';
+
+                fullscreenButton.style.borderTopRightRadius = null;
+                fullscreenButton.style.borderTopLeftRadius = null;
+                fullscreenButton.style.borderBottomRightRadius = "4px";
+                fullscreenButton.style.borderBottomLeftRadius = "4px";
+
+                if (window.innerWidth > 640) {
+                    var modxBtnElems = document.getElementById("modx-action-buttons");
+                    fullscreenButton.style.top = modxBtnElems.offsetTop + modxBtnElems.offsetHeight + 'px';
+                } else {
+                    fullscreenButton.style.top = 0;
+                }
+            } else {
+                fullscreenButton.style.position = "absolute";
+                fullscreenButton.style.top = "-24px";
+                fullscreenButton.style.right = "0";
+                fullscreenButton.style['z-index'] = null;
+
+                fullscreenButton.style.borderTopRightRadius = "4px";
+                fullscreenButton.style.borderTopLeftRadius = "4px";
+                fullscreenButton.style.borderBottomRightRadius = null;
+                fullscreenButton.style.borderBottomLeftRadius = null;
+            }
+        };
+        
+        /** 
+         * Function to handle fullscreen (toggle)
+         */
+        var handleFullScreen = function(editor, fullscreenButton) {
+            // Toggle class
+            dom.toggleCssClass(editor.container, "fullScreen");
+            // Get current situation
+            var isFullScreen = dom.hasCssClass(editor.container, "fullScreen");
+            // Set size and resize as needed
+            setEditorSize(editor.container, isFullScreen);
+            editor.resize();
+            // Handle searchbox position as needed
+            handleSearchBoxPosition(editor, isFullScreen);
+            // Handle fullscreen toggle position
+            handleFullScreenButtonPosition(fullscreenButton, isFullScreen);
         };
         
         /** 
