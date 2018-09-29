@@ -575,7 +575,7 @@ JS;
         var setEditorSize = function(editorContainer, isFullScreen) {
             if (isFullScreen) {
                 editorContainer.style.position = 'fixed';
-                editorContainer.style.top = '55px';
+                editorContainer.style.top = (window.innerWidth > 640) ? document.getElementById("modx-action-buttons").offsetTop + 'px' : 0;
                 editorContainer.style.bottom = '0';
                 editorContainer.style.left = '0';
                 editorContainer.style.right = '0';
