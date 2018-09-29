@@ -6,6 +6,14 @@
  * @subpackage build
  */
 
+/* define version */
+define('PKG_NAME','SimpleAceCodeEditor');
+define('PKG_NAMESPACE','simpleacecodeeditor');
+define('PKG_VERSION','1.4.6');
+define('PKG_RELEASE','pl');
+define('PKG_DESCRIPTION',sprintf('Ace Code Editor *simple* integration - %s-%s', PKG_VERSION, PKG_RELEASE));
+
+
 function getFileContentsWithoutPHPTags($filename) {
     $o = file_get_contents($filename);
     $o = trim(str_replace(array('<?php','?>'),'',$o));
@@ -18,12 +26,6 @@ function getFileContentsWithoutPHPTags($filename) {
 echo "<PRE>";
 $tstart = microtime(true);
 set_time_limit(0);
-/* define version */
-define('PKG_NAME','SimpleAceCodeEditor');
-define('PKG_NAMESPACE','simpleacecodeeditor');
-define('PKG_VERSION','1.4.5');
-define('PKG_RELEASE','pl');
-define('PKG_DESCRIPTION',sprintf('Ace Code Editor *simple* integration - %s-%s', PKG_VERSION, PKG_RELEASE));
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(

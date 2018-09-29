@@ -1,4 +1,10 @@
 
+29 Sept. 2018 - Indigo74
+Version 1.4.6
+ * Fix fullscreen bug for small screen
+ * Added a toggle fullscreen button
+ * Added ToggleFullScreenShowButton property to allow hiding the toggle fullscreen button
+
 25 Sept. 2018 - Indigo74
 Version 1.4.5
  * Fix some small bug
