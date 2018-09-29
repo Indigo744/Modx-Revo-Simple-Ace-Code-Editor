@@ -126,5 +126,12 @@ $properties = array(
         'value' => 'F11',
         'options' => '',
     ),
+    array(
+        'name' => 'ToggleFullScreenShowButton',
+        'desc' => "Display the toggle fullscreen button (on top right of the editor)",
+        'type' => 'combo-boolean',
+        'value' => '1',
+        'options' => '',
+    ),
 );
 return $properties;

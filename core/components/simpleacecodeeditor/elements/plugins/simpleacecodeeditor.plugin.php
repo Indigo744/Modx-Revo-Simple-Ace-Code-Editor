@@ -60,6 +60,9 @@
  *
  *     ToggleFullScreenKeyBinding: Key binding used to toggle editor fullscreen (example: Ctrl-P or F11 or anything you want)
  *                                 default: F11
+ *
+ *     ToggleFullScreenShowButton: Display the toggle fullscreen button (on top right of the editor)
+ *                                 default: true
  * 
  *
  * If you want to edit a property, create your own property set first.
@@ -110,6 +113,7 @@ $AceEmmet = $modx->getoption('Emmet', $scriptProperties, $modx->getOption($plugi
 $AcePrintMarginColumn = $modx->getoption('AcePrintMarginColumn', $scriptProperties, $modx->getOption($pluginName . '.AcePrintMarginColumn', null, 0));
 $AceChunkDetectMIMEShebang = $modx->getoption('ChunkDetectMIMEShebang', $scriptProperties, $modx->getOption($pluginName . '.ChunkDetectMIMEShebang', null, true));
 $AceToggleFullScreenKeyBinding = $modx->getoption('ToggleFullScreenKeyBinding', $scriptProperties, $modx->getOption($pluginName . '.ToggleFullScreenKeyBinding', null, "F11"));
+$AceToggleFullScreenShowButton = $modx->getoption('ToggleFullScreenShowButton', $scriptProperties, $modx->getOption($pluginName . '.ToggleFullScreenShowButton', null, true));
 
 /** Inits script options **/
 $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
@@ -172,6 +176,7 @@ JS;
     array_push($scriptPaths, "$AceBasePath/ext-settings_menu.js");
 } 
 
+
 /** Handle Spellcheck extension **/
 if ($AceSpellcheck == true) {
     $editorOptions['spellcheck'] = true;
@@ -183,6 +188,18 @@ if ($AceEmmet == true) {
     $editorOptions['enableEmmet'] = true;
     array_push($scriptPaths, $EmmetPath);
     array_push($scriptPaths, "$AceBasePath/ext-emmet.js");
+}
+
+/** Handle toggle fullscreen button **/
+if ($AceToggleFullScreenShowButton == true) {
+    $editorAdditionalScript .= <<<JS
+        // Create fullscreen toggle button
+        var fullscreenButton = createFullScreenButton(editor, aceEditorDiv);
+JS;
+} else {
+    $editorAdditionalScript .= <<<JS
+        var fullscreenButton = null;
+JS;
 }
 
 /** Corresponding arrays **/
@@ -495,9 +512,6 @@ JS;
             
             // Additional scripts
             {$editorAdditionalScript}
-
-            // Create fullscreen toggle button
-            var fullscreenButton = createFullScreenButton(editor, aceEditorDiv);
             
             // Fullscreen toggle support
             editor.commands.addCommand({
@@ -666,8 +680,10 @@ JS;
             editor.resize();
             // Handle searchbox position as needed
             handleSearchBoxPosition(editor, isFullScreen);
-            // Handle fullscreen toggle position
-            handleFullScreenButtonPosition(fullscreenButton, isFullScreen);
+            if (fullscreenButton) {
+                // Handle fullscreen toggle position
+                handleFullScreenButtonPosition(fullscreenButton, isFullScreen);
+            }
         };
         
         /** 

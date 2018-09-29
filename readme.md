@@ -121,6 +121,11 @@ See [these binding examples](https://github.com/ajaxorg/ace/wiki/Default-Keyboar
 *default: `F11`*
 
 
+**ToggleFullScreenShowButton**: Display the toggle fullscreen button (on top right of the editor)
+
+*default: `true`*
+
+
 ## MIME detection
 
 When the editor is initialized, a proper mode (i.e. syntax highlighting) is picked based on several rules.
