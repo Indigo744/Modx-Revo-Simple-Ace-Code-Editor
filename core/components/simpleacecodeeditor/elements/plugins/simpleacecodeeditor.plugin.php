@@ -203,6 +203,10 @@ JS;
 }
 
 /** Corresponding arrays **/
+$mimeTypeWithoutMixedMode = array(
+    'application/x-php'
+);
+
 $mimeTypeToMode = array(
     'text/x-smarty'                     => 'smarty',
     'text/html'                         => 'html',
@@ -263,26 +267,22 @@ $extensionMap = array(
 /** Adapt field/mime depending on event type **/
 $mimeType = false;
 $field = false;
-$mixedMode = true;
 switch ($modx->event->name) {
     case 'OnSnipFormPrerender':
         // Snippets are PHP
         $field = 'modx-snippet-snippet';
         $mimeType = 'application/x-php';
-        $mixedMode = false;
         break;
     case 'OnTempFormPrerender':
         // Templates are HTML
         $field = 'modx-template-content';
         $mimeType = 'text/html';
-        $mixedMode = true;
         break;
     case 'OnChunkFormPrerender':
         // Chunks are HTML
         // unless it is static then we look at the file extension
         // unless it a proper mime type is set in description or first line of chunk!
         $field = 'modx-chunk-snippet';
-        $mixedMode = true;
         
         if ($modx->controller->chunk) {
             /** Try to detect shebang **/
@@ -319,13 +319,11 @@ switch ($modx->event->name) {
         // Plugins are PHP
         $field = 'modx-plugin-plugincode';
         $mimeType = 'application/x-php';
-        $mixedMode = false;
         break;
     case 'OnFileCreateFormPrerender':
         // On file creation, use plain text
         $field = 'modx-file-content';
         $mimeType = 'text/plain';
-        $mixedMode = true;
         break;
     case 'OnFileEditFormPrerender':
         // For file editing, we look at the file extension
@@ -333,7 +331,6 @@ switch ($modx->event->name) {
         // Identify mime type according to extension
         $extension = pathinfo($scriptProperties['file'], PATHINFO_EXTENSION);
         $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
-        $mixedMode = true;
         break;
     case 'OnDocFormPrerender':
         // For document, we look at the content type
@@ -350,7 +347,6 @@ switch ($modx->event->name) {
         }
         $field = 'ta';
         $mimeType = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
-        $mixedMode = true;
         break;
     default:
         return;
@@ -362,7 +358,7 @@ if ($field) {
     $mode = isset($mimeTypeToMode[$mimeType]) ? $mimeTypeToMode[$mimeType] : 'text';
     
     // Handle mixed mode
-    if ($mixedMode == true) {
+    if (!in_array($mimeType, $mimeTypeWithoutMixedMode)) {
         // Mixed mode, set needed files and functions 
         
         array_push($scriptPaths, "$AceAssetsUrl/modx_highlight_rules.js");
