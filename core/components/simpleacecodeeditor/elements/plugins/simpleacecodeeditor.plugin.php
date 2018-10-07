@@ -557,9 +557,9 @@ JS;
          * Recursive function
          * If textarea is not found, wait a bit and search again
          */
-        var tryToGetTextArea = function() {
+        var tryToGetTextArea = function($fieldName) {
             // Try to find the textarea
-            var textarea = document.getElementById("{$field}");
+            var textarea = document.getElementById($fieldName);
             
             if (textarea) {
                 // Element found, init!
@@ -713,7 +713,7 @@ JS;
         };
         
         // Start searching!
-        tryToGetTextArea();
+        tryToGetTextArea("{$field}");
     })();
 </script>
 HTML;
