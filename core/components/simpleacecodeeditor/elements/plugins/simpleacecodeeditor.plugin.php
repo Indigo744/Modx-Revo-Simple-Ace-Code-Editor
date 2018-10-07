@@ -265,24 +265,24 @@ $extensionMap = array(
 
 
 /** Adapt field/mime depending on event type **/
-$mimeType = false;
-$field = false;
+$mainField = false;
+$mainFieldMimeType = false;
 switch ($modx->event->name) {
     case 'OnSnipFormPrerender':
         // Snippets are PHP
-        $field = 'modx-snippet-snippet';
-        $mimeType = 'application/x-php';
+        $mainField = 'modx-snippet-snippet';
+        $mainFieldMimeType = 'application/x-php';
         break;
     case 'OnTempFormPrerender':
         // Templates are HTML
-        $field = 'modx-template-content';
-        $mimeType = 'text/html';
+        $mainField = 'modx-template-content';
+        $mainFieldMimeType = 'text/html';
         break;
     case 'OnChunkFormPrerender':
         // Chunks are HTML
         // unless it is static then we look at the file extension
         // unless it a proper mime type is set in description or first line of chunk!
-        $field = 'modx-chunk-snippet';
+        $mainField = 'modx-chunk-snippet';
         
         if ($modx->controller->chunk) {
             /** Try to detect shebang **/
@@ -296,41 +296,41 @@ switch ($modx->event->name) {
                     if (strpos($chunkDescription, $currMimeType) !== FALSE || 
                         strpos($chunkContentFirstLine, $currMimeType) !== FALSE) 
                     {
-                        $mimeType = $currMimeType;
+                        $mainFieldMimeType = $currMimeType;
                         break;
                     }
                 }
             }
             
             /** For static file, try to detect through file extension **/
-            if (!$mimeType && $modx->controller->chunk->isStatic()) {
+            if (!$mainFieldMimeType && $modx->controller->chunk->isStatic()) {
                 $extension = pathinfo($modx->controller->chunk->getSourceFile(), PATHINFO_EXTENSION);
-                $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
+                $mainFieldMimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
             }
         }
         
         /* Default to HTML */
-        if (!$mimeType) {
-            $mimeType = 'text/html';
+        if (!$mainFieldMimeType) {
+            $mainFieldMimeType = 'text/html';
         }
         
         break;
     case 'OnPluginFormPrerender':
         // Plugins are PHP
-        $field = 'modx-plugin-plugincode';
-        $mimeType = 'application/x-php';
+        $mainField = 'modx-plugin-plugincode';
+        $mainFieldMimeType = 'application/x-php';
         break;
     case 'OnFileCreateFormPrerender':
         // On file creation, use plain text
-        $field = 'modx-file-content';
-        $mimeType = 'text/plain';
+        $mainField = 'modx-file-content';
+        $mainFieldMimeType = 'text/plain';
         break;
     case 'OnFileEditFormPrerender':
         // For file editing, we look at the file extension
-        $field = 'modx-file-content';
+        $mainField = 'modx-file-content';
         // Identify mime type according to extension
         $extension = pathinfo($scriptProperties['file'], PATHINFO_EXTENSION);
-        $mimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
+        $mainFieldMimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
         break;
     case 'OnDocFormPrerender':
         // For document, we look at the content type
@@ -345,17 +345,17 @@ switch ($modx->event->name) {
                 return;
             }
         }
-        $field = 'ta';
-        $mimeType = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
+        $mainField = 'ta';
+        $mainFieldMimeType = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
         break;
     default:
         return;
 }
 
 /** If field found, include the javascript code to load Ace **/
-if ($field) {
+if ($mainField) {
     // Get corresponding Ace mode according to mime type
-    $mode = isset($mimeTypeToMode[$mimeType]) ? $mimeTypeToMode[$mimeType] : 'text';
+    $mode = isset($mimeTypeToMode[$mainFieldMimeType]) ? $mimeTypeToMode[$mainFieldMimeType] : 'text';
     
     // Handle mixed mode
     if (!in_array($mimeType, $mimeTypeWithoutMixedMode)) {
@@ -713,7 +713,7 @@ JS;
         };
         
         // Start searching!
-        tryToGetTextArea("{$field}");
+        tryToGetTextArea("{$mainField}");
     })();
 </script>
 HTML;
