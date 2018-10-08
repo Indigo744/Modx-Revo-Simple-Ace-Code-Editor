@@ -118,7 +118,7 @@ $AceToggleFullScreenShowButton = $modx->getoption('ToggleFullScreenShowButton', 
 /** Inits script options **/
 $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
 $AceBasePath = dirname($AcePath);
-$scriptPaths = array($AcePath);
+$scriptPaths = array($AcePath, "$AceAssetsUrl/modx_highlight_rules.js");
 $editorOptions = array();
 $rendererOptions = array(
     'theme' => "ace/theme/$AceTheme",
@@ -203,9 +203,7 @@ JS;
 }
 
 /** Corresponding arrays **/
-$mimeTypeWithoutMixedMode = array(
-    'application/x-php'
-);
+$modeThatShouldNotBeMixed = array('php');
 
 $mimeTypeToMode = array(
     'text/x-smarty'                     => 'smarty',
@@ -265,24 +263,21 @@ $extensionMap = array(
 
 
 /** Adapt field/mime depending on event type **/
-$mainField = false;
-$mainFieldMimeType = false;
+$targetFields = [];
 switch ($modx->event->name) {
     case 'OnSnipFormPrerender':
         // Snippets are PHP
-        $mainField = 'modx-snippet-snippet';
-        $mainFieldMimeType = 'application/x-php';
+        $targetFields['modx-snippet-snippet'] = 'application/x-php';
         break;
     case 'OnTempFormPrerender':
         // Templates are HTML
-        $mainField = 'modx-template-content';
-        $mainFieldMimeType = 'text/html';
+        $targetFields['modx-template-content'] = 'text/html';
         break;
     case 'OnChunkFormPrerender':
         // Chunks are HTML
         // unless it is static then we look at the file extension
         // unless it a proper mime type is set in description or first line of chunk!
-        $mainField = 'modx-chunk-snippet';
+        $targetFields['modx-chunk-snippet'] = null;
         
         if ($modx->controller->chunk) {
             /** Try to detect shebang **/
@@ -292,163 +287,84 @@ switch ($modx->event->name) {
                 // Retrieve first line of chunk content
                 $chunkContentFirstLine = strtok($modx->controller->chunk->getContent(), "\n");
                 // Loop through known mime
-                foreach($mimeTypeToMode as $currMimeType => $mode) {
+                foreach(array_keys($mimeTypeToMode) as $currMimeType) {
                     if (strpos($chunkDescription, $currMimeType) !== FALSE || 
                         strpos($chunkContentFirstLine, $currMimeType) !== FALSE) 
                     {
-                        $mainFieldMimeType = $currMimeType;
+                        $targetFields['modx-chunk-snippet'] = $currMimeType;
                         break;
                     }
                 }
             }
             
             /** For static file, try to detect through file extension **/
-            if (!$mainFieldMimeType && $modx->controller->chunk->isStatic()) {
+            if (!$targetFields['modx-chunk-snippet'] && $modx->controller->chunk->isStatic()) {
                 $extension = pathinfo($modx->controller->chunk->getSourceFile(), PATHINFO_EXTENSION);
-                $mainFieldMimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
+                $targetFields['modx-chunk-snippet'] = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
             }
         }
         
         /* Default to HTML */
-        if (!$mainFieldMimeType) {
-            $mainFieldMimeType = 'text/html';
+        if (!$targetFields['modx-chunk-snippet']) {
+            $targetFields['modx-chunk-snippet'] = 'text/html';
         }
         
         break;
     case 'OnPluginFormPrerender':
         // Plugins are PHP
-        $mainField = 'modx-plugin-plugincode';
-        $mainFieldMimeType = 'application/x-php';
+        $targetFields['modx-plugin-plugincode'] = 'application/x-php';
         break;
     case 'OnFileCreateFormPrerender':
         // On file creation, use plain text
-        $mainField = 'modx-file-content';
-        $mainFieldMimeType = 'text/plain';
+        $targetFields['modx-file-content'] = 'text/plain';
         break;
     case 'OnFileEditFormPrerender':
         // For file editing, we look at the file extension
-        $mainField = 'modx-file-content';
         // Identify mime type according to extension
         $extension = pathinfo($scriptProperties['file'], PATHINFO_EXTENSION);
-        $mainFieldMimeType = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
+        $targetFields['modx-file-content'] = isset($extensionMap[$extension]) ? $extensionMap[$extension] : 'text/plain';
         break;
     case 'OnDocFormPrerender':
         // For document, we look at the content type
         // But we wont show anything if another RTE is set (e.g. CKEditor or TinyMCE)
-        if (!$modx->controller->resourceArray) {
-            return;
-        }
-        if ($modx->getOption('use_editor')) {
+        if ($modx->controller->resourceArray) {
+            $useEditor = $modx->getOption('use_editor');
             $richText = $modx->controller->resourceArray['richtext'];
             $classKey = $modx->controller->resourceArray['class_key'];
-            if ($richText || in_array($classKey, array('modStaticResource','modSymLink','modWebLink','modXMLRPCResource'))) {
-                return;
+            if (!$useEditor || (!$richText && !in_array($classKey, array('modStaticResource','modSymLink','modWebLink','modXMLRPCResource')))) {
+                $targetFields['ta'] = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
             }
         }
-        $mainField = 'ta';
-        $mainFieldMimeType = $modx->getObject('modContentType', $modx->controller->resourceArray['content_type'])->get('mime_type');
+
+        // Document can have template variables associated
+        $templateId = $modx->controller->resource->get('template');
+        $templateVarList = $modx->getObject('modTemplate', $templateId)->getTemplateVarList();
+        // Loop through all TV's
+        foreach ($templateVarList['collection'] as $tv) {
+            $tvDescription = $tv->get('description');
+            // Check if this TV: 
+            //      - is associated to the current template
+            //      - is textarea
+            //      - has the char '/' in description which means a mime type is *potentially* set
+            if ($tv->hasTemplate($templateId) && $tv->get('type') === 'textarea' && strpos($tvDescription, '/') !== FALSE) {
+                // Loop through known mime
+                foreach(array_keys($mimeTypeToMode) as $currMimeType) {
+                    if (strpos($tvDescription, $currMimeType) !== FALSE) 
+                    {
+                        $targetFields['tv'.$tv->get('id')] = $currMimeType;
+                        break;
+                    }
+                }
+            }
+        }
         break;
     default:
         return;
 }
 
 /** If field found, include the javascript code to load Ace **/
-if ($mainField) {
-    // Get corresponding Ace mode according to mime type
-    $mode = isset($mimeTypeToMode[$mainFieldMimeType]) ? $mimeTypeToMode[$mainFieldMimeType] : 'text';
-    
-    // Handle mixed mode
-    if (!in_array($mimeType, $mimeTypeWithoutMixedMode)) {
-        // Mixed mode, set needed files and functions 
-        
-        array_push($scriptPaths, "$AceAssetsUrl/modx_highlight_rules.js");
-        
-        $setModeScript = <<<JS
-            /** 
-             * Function to create a mixed mode with MODX tags
-             * Based on the work of danyaPostfactum, see link below
-             * https://github.com/danyaPostfactum/modx-ace/blob/master/assets/components/ace/modx.texteditor.js
-             */
-            var createModxMixedMode = function(Mode) {
-                var oop = ace.require("ace/lib/oop");
-                
-                /* Create the new mixed mode */
-                var ModxMixedMode = function() {
-                    Mode.call(this);
-                    
-                    // Save the parent rules to be able to call them later
-                    var parentHighlightRules = this.HighlightRules;
-                    
-                    /* Create the new mixed rules */
-                    var mixedHighlightRules = function() {
-                        // Set parent rules
-                        parentHighlightRules.call(this);
-                        
-                        // Set modx rules (function available in file modx_highlight_rules.js already loaded)
-                        modxCustomHighlightRules.call(this);
-                        
-                        // Normalized!
-                        this.normalizeRules();
-                    };
-                    
-                    // Inherit prototype from parent rules
-                    oop.inherits(mixedHighlightRules, parentHighlightRules);
-                    
-                    // Set mixed highlight rules
-                    this.HighlightRules = mixedHighlightRules;
-                };
-                
-                // Inherit prototype from parent Mode
-                oop.inherits(ModxMixedMode, Mode);
-                
-                // Handle the case were a worker is defined in parent mode
-                if (Mode.prototype.createWorker) {
-                    ModxMixedMode.prototype.createWorker = function(session) {
-                        // Call parent without 'this'
-                        var worker = Mode.prototype.createWorker(session);
-                        if (worker) {
-                            // Replace onError function to handle modx tag
-                            worker.on("error", function(e) {
-                                var annotations = [];
-                                var idx_max = e.data.length;
-                                // Loop through errors, and silence errors when a modx tag [[ exists
-                                for(var i = 0 ; i < idx_max ; i++) {
-                                    // Get line
-                                    var line = session.getLine(e.data[i].row);
-                                    if (line.indexOf('[[') === -1) {
-                                        // No modx tag, add to annotations
-                                        annotations.push(e.data[i]);
-                                    }
-                                }
-                                session.setAnnotations(annotations);
-                            });
-                        }
-                        return worker;
-                    };
-                }
-                
-                // We're done. Return the new mixed mode
-                return new ModxMixedMode();
-            };
-            
-            /** 
-             * Function to set a mixed mode
-             */
-            var setMixedMode = function(editor, mode) {
-                var config = ace.require('ace/config');
-                config.loadModule(["mode", 'ace/mode/' + mode], function(module) {
-                    var mode = createModxMixedMode(module.Mode);
-                    editor.session.setMode(mode);
-                }.bind(this));
-            };
-                
-            setMixedMode(editor, "{$mode}");
-JS;
-
-    } else {
-        // No mixed mode, simply set mode
-        $setModeScript = "editor.session.setMode('ace/mode/{$mode}');";
-    }
+if (!empty($targetFields)) {
+    $modx->log(modX::LOG_LEVEL_ERROR, print_r($targetFields, true));
     
     // Convert options to JSON object
     $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
@@ -465,7 +381,17 @@ JS;
         // Include file
         $script .= "<script src='$scriptPath$CacheBustingQSValue' type='text/javascript' charset='utf-8'></script>\n";
     }
-    
+
+    $tryToGetTextArea = "";
+
+    foreach ($targetFields as $targetField => $fieldMimeType) {
+        $mode = isset($mimeTypeToMode[$fieldMimeType]) ? $mimeTypeToMode[$fieldMimeType] : 'text';
+        if (!in_array($mode, $modeThatShouldNotBeMixed)) {
+            $mode = 'mixed-' . $mode;
+        }
+        $tryToGetTextArea .= "tryToGetTextArea('$targetField', '$mode');\n";
+    }
+
     // The script...
     $script .= <<<HTML
 <script type="text/javascript">
@@ -488,7 +414,8 @@ JS;
          * Function Init ACE editor
          * Uses textarea variable
          */
-        var initAceCodeEditor = function(textarea) {
+        var initAceCodeEditor = function(textarea, mode) {
+
             // Set parent element to relative position
             // Hence the Ace Editor div absolute positionning will be relative to it
             textarea.parentNode.style.position = 'relative';
@@ -506,7 +433,7 @@ JS;
             // Create Ace editor !
             var editor = ace.edit(aceEditorDiv);
             
-            // Additional scripts
+            // Additional scripts using editor
             {$editorAdditionalScript}
             
             // Fullscreen toggle support
@@ -541,15 +468,22 @@ JS;
             editor.setOptions({$editorOptions});
             editor.renderer.setOptions({$rendererOptions});
             
-            {$setModeScript}
+            // Check if mode starts with mixed-
+            // Which indicates that a mixed-type should be used
+            if (mode.lastIndexOf('mixed-', 0) === 0) {
+                setMixedMode(editor, mode.split('-')[1]);
+            } else {
+                editor.session.setMode('ace/mode/' + mode);
+            }
+
+            var currentSession = editor.getSession();
             
-            editor.getSession().setValue(textarea.value);
+            currentSession.setValue(textarea.value);
             
             // Keep Ace and textarea synchronized
             editor.on("change", function() {
-                textarea.value = editor.getSession().getValue();
+                textarea.value = currentSession.getValue();
             });
-            
         };
         
         /** 
@@ -557,19 +491,19 @@ JS;
          * Recursive function
          * If textarea is not found, wait a bit and search again
          */
-        var tryToGetTextArea = function($fieldName) {
+        var tryToGetTextArea = function(fieldName, mode) {
             // Try to find the textarea
-            var textarea = document.getElementById($fieldName);
+            var textarea = document.getElementById(fieldName);
             
             if (textarea) {
                 // Element found, init!
-                initAceCodeEditor(textarea);
+                initAceCodeEditor(textarea, mode);
             } else {
                 // Damn, not found. Wait a bit and try again
                 setTimeout(function() {
                     currentTry++;
                     if (currentTry <= MAX_TRIES) {
-                        tryToGetTextArea();
+                        tryToGetTextArea(fieldName, mode);
                     }
                 }, WAIT_BETWEEN_TRIES_MS);
             }
@@ -711,9 +645,88 @@ JS;
                 editor.searchBox.element.style.bottom = null;
             }
         };
+    
+        /** 
+         * Function to create a mixed mode with MODX tags
+         * Based on the work of danyaPostfactum, see link below
+         * https://github.com/danyaPostfactum/modx-ace/blob/master/assets/components/ace/modx.texteditor.js
+         */
+        var createModxMixedMode = function(Mode) {
+            var oop = ace.require("ace/lib/oop");
+            
+            /* Create the new mixed mode */
+            var ModxMixedMode = function() {
+                Mode.call(this);
+                
+                // Save the parent rules to be able to call them later
+                var parentHighlightRules = this.HighlightRules;
+                
+                /* Create the new mixed rules */
+                var mixedHighlightRules = function() {
+                    // Set parent rules
+                    parentHighlightRules.call(this);
+                    
+                    // Set modx rules (function available in file modx_highlight_rules.js already loaded)
+                    modxCustomHighlightRules.call(this);
+                    
+                    // Normalized!
+                    this.normalizeRules();
+                };
+                
+                // Inherit prototype from parent rules
+                oop.inherits(mixedHighlightRules, parentHighlightRules);
+                
+                // Set mixed highlight rules
+                this.HighlightRules = mixedHighlightRules;
+            };
+            
+            // Inherit prototype from parent Mode
+            oop.inherits(ModxMixedMode, Mode);
+            
+            // Handle the case were a worker is defined in parent mode
+            if (Mode.prototype.createWorker) {
+                ModxMixedMode.prototype.createWorker = function(session) {
+                    // Call parent without 'this'
+                    var worker = Mode.prototype.createWorker(session);
+                    if (worker) {
+                        // Replace onError function to handle modx tag
+                        worker.on("error", function(e) {
+                            var annotations = [];
+                            var idx_max = e.data.length;
+                            // Loop through errors, and silence errors when a modx tag [[ exists
+                            for(var i = 0 ; i < idx_max ; i++) {
+                                // Get line
+                                var line = session.getLine(e.data[i].row);
+                                if (line.indexOf('[[') === -1) {
+                                    // No modx tag, add to annotations
+                                    annotations.push(e.data[i]);
+                                }
+                            }
+                            session.setAnnotations(annotations);
+                        });
+                    }
+                    return worker;
+                };
+            }
+            
+            // We're done. Return the new mixed mode
+            return new ModxMixedMode();
+        };
         
+        /** 
+         * Function to set a mixed mode
+         */
+        var setMixedMode = function(editor, mode) {
+            var config = ace.require('ace/config');
+            config.loadModule(["mode", 'ace/mode/' + mode], function(module) {
+                var mode = createModxMixedMode(module.Mode);
+                editor.session.setMode(mode);
+            }.bind(this));
+        };
+
         // Start searching!
-        tryToGetTextArea("{$mainField}");
+        {$tryToGetTextArea}
+        
     })();
 </script>
 HTML;
