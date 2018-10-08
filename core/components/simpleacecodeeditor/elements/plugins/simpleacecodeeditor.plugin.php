@@ -395,7 +395,7 @@ if (!empty($targetFields)) {
     // The script...
     $script .= <<<HTML
 <script type="text/javascript">
-    (function() {
+    Ext.onReady(function() {
         "use strict";
     
         // Max number of tries
@@ -727,7 +727,7 @@ if (!empty($targetFields)) {
         // Start searching!
         {$tryToGetTextArea}
         
-    })();
+    });
 </script>
 HTML;
 
