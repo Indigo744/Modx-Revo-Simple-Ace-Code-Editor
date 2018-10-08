@@ -364,8 +364,7 @@ switch ($modx->event->name) {
 
 /** If field found, include the javascript code to load Ace **/
 if (!empty($targetFields)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, print_r($targetFields, true));
-    
+
     // Convert options to JSON object
     $editorOptions = json_encode($editorOptions, JSON_FORCE_OBJECT);
     $rendererOptions = json_encode($rendererOptions, JSON_FORCE_OBJECT);
@@ -383,13 +382,14 @@ if (!empty($targetFields)) {
     }
 
     $tryToGetTextArea = "";
-
+    $timeout = 0;
     foreach ($targetFields as $targetField => $fieldMimeType) {
         $mode = isset($mimeTypeToMode[$fieldMimeType]) ? $mimeTypeToMode[$fieldMimeType] : 'text';
         if (!in_array($mode, $modeThatShouldNotBeMixed)) {
             $mode = 'mixed-' . $mode;
         }
-        $tryToGetTextArea .= "tryToGetTextArea('$targetField', '$mode');\n";
+        $tryToGetTextArea .= "setTimeout(function(){ tryToGetTextArea('$targetField', '$mode'); }, $timeout);\n";
+        $timeout += 50;
     }
 
     // The script...
