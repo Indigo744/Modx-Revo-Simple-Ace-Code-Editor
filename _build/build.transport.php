@@ -9,8 +9,8 @@
 /* define version */
 define('PKG_NAME','SimpleAceCodeEditor');
 define('PKG_NAMESPACE','simpleacecodeeditor');
-define('PKG_VERSION','1.4.6');
-define('PKG_RELEASE','pl');
+define('PKG_VERSION','1.5.0');
+define('PKG_RELEASE','beta1');
 define('PKG_DESCRIPTION',sprintf('Ace Code Editor *simple* integration - %s-%s', PKG_VERSION, PKG_RELEASE));
 
 
