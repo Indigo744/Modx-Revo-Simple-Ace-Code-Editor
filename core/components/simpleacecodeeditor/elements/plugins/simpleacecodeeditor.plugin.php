@@ -66,7 +66,7 @@
  * 
  *
  * If you want to edit a property, create your own property set first.
- *
+ * Don't forget to associate your new property set to all events in "System Events" tab.
  *
  * Based on Ace Source Editor Plugin by Danil Kostin
  *
