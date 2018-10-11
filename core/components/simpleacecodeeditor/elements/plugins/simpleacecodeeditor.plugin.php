@@ -63,6 +63,12 @@
  *
  *     ToggleFullScreenShowButton: Display the toggle fullscreen button (on top right of the editor)
  *                                 default: true
+ *
+ *     EditorHeight: Editor height (in px, em, rem or %)
+ *                   default: <empty> (uses default editor height)
+ *
+ *     EditorTVHeight: Editor height for template vars - take precedence over EditorHeight value (in px, em, rem or %)
+ *                     default: <empty> (uses default editor height)
  * 
  *
  * If you want to edit a property, create your own property set first.
@@ -114,6 +120,8 @@ $AcePrintMarginColumn = $modx->getoption('AcePrintMarginColumn', $scriptProperti
 $AceChunkDetectMIMEShebang = $modx->getoption('ChunkDetectMIMEShebang', $scriptProperties, $modx->getOption($pluginName . '.ChunkDetectMIMEShebang', null, true));
 $AceToggleFullScreenKeyBinding = $modx->getoption('ToggleFullScreenKeyBinding', $scriptProperties, $modx->getOption($pluginName . '.ToggleFullScreenKeyBinding', null, "F11"));
 $AceToggleFullScreenShowButton = $modx->getoption('ToggleFullScreenShowButton', $scriptProperties, $modx->getOption($pluginName . '.ToggleFullScreenShowButton', null, true));
+$AceEditorHeight = $modx->getoption('EditorHeight', $scriptProperties, $modx->getOption($pluginName . '.EditorHeight', null, null));
+$AceEditorTVHeight = $modx->getoption('EditorTVHeight', $scriptProperties, $modx->getOption($pluginName . '.EditorTVHeight', null, null));
 
 /** Inits script options **/
 $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
@@ -199,6 +207,25 @@ JS;
 } else {
     $editorAdditionalScript .= <<<JS
         var fullscreenButton = null;
+JS;
+}
+
+/** Handle height definition **/
+if ($AceEditorHeight !== null && $AceEditorHeight > 0) {
+    // Make sure we have a size for TVs
+    if (!$AceEditorTVHeight) $AceEditorTVHeight = $AceEditorHeight;
+
+    // Add px unit if no unit was set
+    $AceEditorHeight = is_numeric($AceEditorHeight) ? $AceEditorHeight.'px' : $AceEditorHeight;
+    $AceEditorTVHeight = is_numeric($AceEditorTVHeight) ? $AceEditorTVHeight.'px' : $AceEditorTVHeight;
+
+    $editorAdditionalScript .= <<<JS
+        // Set text area height
+        if (textarea.id.lastIndexOf('tv', 0) === 0) {
+            textarea.style.height = '{$AceEditorTVHeight}';
+        } else {
+            textarea.style.height = '{$AceEditorHeight}';
+        }
 JS;
 }
 

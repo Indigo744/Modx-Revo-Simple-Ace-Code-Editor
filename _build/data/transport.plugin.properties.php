@@ -133,5 +133,19 @@ $properties = array(
         'value' => '1',
         'options' => '',
     ),
+    array(
+        'name' => 'EditorHeight',
+        'desc' => "Editor height (in px, em, rem or %)",
+        'type' => 'textfield',
+        'value' => '',
+        'options' => '',
+    ),
+    array(
+        'name' => 'EditorTVHeight',
+        'desc' => "Editor height for template vars - take precedence over EditorHeight value (in px, em, rem or %)",
+        'type' => 'textfield',
+        'value' => '',
+        'options' => '',
+    ),
 );
 return $properties;
