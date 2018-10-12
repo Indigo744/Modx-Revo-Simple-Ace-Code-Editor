@@ -60,6 +60,27 @@ $properties = array(
         ),
     ),
     array(
+        'name' => 'SoftWraps',
+        'desc' => 'Set editor soft wraps (either `off`, `free`, `printMargin` or a number of columns)',
+        'type' => 'textfield',
+        'value' => 'off',
+        'options' => '',
+    ),
+    array(
+        'name' => 'FontSize',
+        'desc' => 'Set editor font size (in px, em, rem or %)',
+        'type' => 'textfield',
+        'value' => '12px',
+        'options' => '',
+    ),
+    array(
+        'name' => 'SoftTabs',
+        'desc' => 'Enable soft tabs (4 spaces) instead of hard tabs (tab character)',
+        'type' => 'combo-boolean',
+        'value' => '1',
+        'options' => '',
+    ),
+    array(
         'name' => 'ReplaceCTRLDKbdShortcut',
         'desc' => 'Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action: duplicate the current line or selection (instead of deleting, which is the default behavior)',
         'type' => 'combo-boolean',

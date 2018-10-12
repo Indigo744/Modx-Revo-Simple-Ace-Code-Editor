@@ -19,6 +19,15 @@
  *     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
  *            default: monokai
  *
+ *     SoftWraps: Set editor soft wraps (either `off`, `free`, `printMargin` or a number of columns)
+ *                default: off
+ * 
+ *     FontSize: Set editor font size (in px, em, rem or %)
+ *               default: 12px
+ *
+ *     SoftTabs: Enable soft tabs (4 spaces) instead of hard tabs (tab character)
+ *               default: true
+ * 
  *     ReplaceCTRLDKbdShortcut: Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action
  *                              duplicate the current line or selection (instead of deleting, which is the default behavior)
  *                              default: true
@@ -111,6 +120,9 @@ if ($modx->getOption('which_element_editor', null) !== $pluginName) {
 $AcePath = $modx->getoption('AcePath', $scriptProperties, $modx->getOption($pluginName . '.AcePath', null, "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"));
 $EmmetPath = $modx->getoption('EmmetPath', $scriptProperties, $modx->getOption($pluginName . '.EmmetPath', null, "https://cloud9ide.github.io/emmet-core/emmet.js"));
 $AceTheme = $modx->getoption('Theme', $scriptProperties, $modx->getOption($pluginName . '.Theme', null, 'monokai'));
+$AceSoftWraps = $modx->getoption('SoftWraps', $scriptProperties, $modx->getOption($pluginName . '.SoftWraps', null, 'off'));
+$AceFontSize = $modx->getoption('FontSize', $scriptProperties, $modx->getOption($pluginName . '.FontSize', null, '12'));
+$AceSoftTabs = $modx->getoption('SoftTabs', $scriptProperties, $modx->getOption($pluginName . '.SoftTabs', null, true));
 $AceReplaceCTRLDKbdShortcut = $modx->getoption('ReplaceCTRLDKbdShortcut', $scriptProperties, $modx->getOption($pluginName . '.ReplaceCTRDKbdShortcut', null, true));
 $AceAutocompletion = $modx->getoption('Autocompletion', $scriptProperties, $modx->getOption($pluginName . '.Autocompletion', null, 'basic'));
 $AceSettingsMenu = $modx->getoption('SettingsMenu', $scriptProperties, $modx->getOption($pluginName . '.SettingsMenu', null, false));
@@ -127,11 +139,16 @@ $AceEditorTVHeight = $modx->getoption('EditorTVHeight', $scriptProperties, $modx
 $AceAssetsUrl = $modx->getOption('assets_url') . 'components/' . strtolower($pluginName);
 $AceBasePath = dirname($AcePath);
 $scriptPaths = array($AcePath, "$AceAssetsUrl/modx_highlight_rules.js");
-$editorOptions = array();
+$editorOptions = array(
+    'wrap' => $AceSoftWraps,
+    'useSoftTabs' => $AceSoftTabs,
+    'navigateWithinSoftTabs' => true
+);
 $rendererOptions = array(
     'theme' => "ace/theme/$AceTheme",
     'showPrintMargin' => $AcePrintMarginColumn > 0 ? true : false,
     'printMarginColumn' => $AcePrintMarginColumn > 0 ? $AcePrintMarginColumn : 80,
+    'fontSize' => $AceFontSize
 );
 $editorAdditionalScript = "\n";
 
