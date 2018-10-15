@@ -1,4 +1,10 @@
 
+15 Oct. 2018 - Indigo74
+Version 1.5.0
+ * Added SoftWraps, FontSize, SoftTabs properties to allow more customisation
+ * Added EditorHeight and EditorTVHeight to allow setting the editor's height
+ * Added support for TV syntax highlighting
+
 29 Sept. 2018 - Indigo74
 Version 1.4.6
  * Fix fullscreen bug for small screen

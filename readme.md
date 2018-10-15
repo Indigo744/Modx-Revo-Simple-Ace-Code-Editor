@@ -7,7 +7,7 @@ It integrates [Ace Code Editor](https://ace.c9.io) into MODx Revolution in a sim
 
 It is available as a package in MODX Extra repository: https://modx.com/extras/package/simpleacecodeeditor
 
-__Current version__ (github): 1.4.6-pl
+__Current version__ (github): 1.5.0-pl
 
 __Current version in Modx Extra repository__: 1.4.6-pl
 
@@ -23,8 +23,10 @@ __Current version in Modx Extra repository__: 1.4.6-pl
  * MODX syntax highlighting
  * Emmet integration (configurable)
  * Full-screen support (F11 while cursor in editor)
- * Any syntax highlighter for your chunks! Set a specific MIME type for you chunks (like a shebang)
+ * Any syntax highlighter for your *chunks*! Set a specific MIME type for you chunks (like a shebang)
    E.g. text/x-sass to have SASS syntax highlighting
+ * Any syntax highlighter for your *TVs*! Set a specific MIME type for you Template Vars directly in the description
+   E.g. text/html to have HTML syntax highlighting
 
    
 ## Install
@@ -51,6 +53,21 @@ Bright themes: `chrome`, `clouds`, `crimson_editor`, `dawn`, `dreamweaver`, `ecl
 Dark themes: `ambiance`, `chaos`, `clouds_midnight`, `dracula`, `cobalt`, `gruvbox`, `gob`, `idle_fingers`, `kr_theme`, `merbivore`, `merbivore_soft`, `mono_industrial`, `monokai`, `pastel_on_dark`, `solarized_dark`, `terminal`, `tomorrow_night`, `tomorrow_night_blue`, `tomorrow_night_bright`, `tomorrow_night_eighties`, `twilight`, `vibrant_ink`
 
 *default: `monokai`*
+
+
+**SoftWraps**: Set editor soft wraps (either `off`, `free`, `printMargin` or a number of columns)
+
+*default: `off`*
+
+
+**FontSize**: Set editor font size (in px, em, rem or %)
+
+*default: `12px`*
+
+
+**SoftTabs**: Enable soft tabs (4 spaces) instead of hard tabs (tab character)
+
+*default: `true`*
 
 
 **ReplaceCTRLDKbdShortcut**: Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action, which is to duplicate the current line or selection (instead of deleting, which is the default behavior)
@@ -126,6 +143,16 @@ See [these binding examples](https://github.com/ajaxorg/ace/wiki/Default-Keyboar
 *default: `true`*
 
 
+**EditorHeight**: Editor height (in px, em, rem or %)
+
+*default: `<empty>` (uses default editor height)*
+
+
+**EditorTVHeight**: Editor height for template vars - take precedence over EditorHeight value (in px, em, rem or %)
+
+*default: `<empty>` (uses default editor height)*
+
+
 ## MIME detection
 
 When the editor is initialized, a proper mode (i.e. syntax highlighting) is picked based on several rules.
@@ -137,6 +164,7 @@ When the editor is initialized, a proper mode (i.e. syntax highlighting) is pick
 **For File creation**: No specific highlighting (`text/plain`)
 **For File edition**: based on file extension
 **For document (page) edition**: based on content type set
+**For TV in document (page) edition**: based on mime-type found in TV's description
 
 
 ## File extension mapping
@@ -200,6 +228,13 @@ Here is how a MIME type is mapped to its mode:
  * __`text/x-ejs`__: `ejs`
  * __`application/x-perl`__: `perl`
 
+## MIME detection for TV's
+
+By default, TV's will not be rendered using Ace.
+
+However, if you have a TV of type `textarea`, you can set a MIME type in its description to enable Ace editor for this TV.
+
+Detected MIME values are `text/x-smarty`, `text/html`, `application/xhtml+xml`, `text/css`, `text/x-scss`, `text/x-sass`, `text/x-less`, `image/svg+xml`, `application/xml`, `text/xml`, `text/javascript`, `application/javascript`, `application/json`, `text/x-php`, `application/x-php`, `text/x-sql`, `text/x-markdown`, `text/plain`, `text/x-twig`
  
 ## MIME detection for Chunks (_ChunkDetectMIMEShebang_ feature)
 

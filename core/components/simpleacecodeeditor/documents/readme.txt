@@ -1,8 +1,8 @@
 --------------------
 Extra: Simple Ace Code Editor
 --------------------
-Version: 1.5.0-beta3
-Created: 12 Oct. 2018
+Version: 1.5.0-pl
+Created: 15 Oct. 2018
 Since: 17 Feb. 2018
 Author: Indigo744 <https://github.com/Indigo744>
 Based on the work of Danil Kostin <danya.postfactum@gmail.com> of Ace extra
@@ -30,6 +30,15 @@ Available properties are:
 
     Theme: editor theme name (you can test them all here: https://ace.c9.io/build/kitchen-sink.html)
            default: monokai
+
+    SoftWraps: Set editor soft wraps (either `off`, `free`, `printMargin` or a number of columns)
+            default: off
+            
+    FontSize: Set editor font size (in px, em, rem or %)
+            default: 12px
+            
+    SoftTabs: Enable soft tabs (4 spaces) instead of hard tabs (tab character)
+            default: true
 
     ReplaceCTRLDKbdShortcut: Replace the CTRL-D (or CMD-D) keyboard shortcut to perform a more sensible action
                              duplicate the current line or selection (instead of deleting, which is the default behavior)
@@ -70,3 +79,8 @@ Available properties are:
                                                       text/x-markdown, text/plain, text/x-twig
                             default: true
 
+    EditorHeight: Editor height (in px, em, rem or %)
+                default: <empty> (uses default editor height)
+                
+    EditorTVHeight: Editor height for template vars - take precedence over EditorHeight value (in px, em, rem or %)
+                    default: <empty> (uses default editor height)
