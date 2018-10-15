@@ -9,7 +9,7 @@ It is available as a package in MODX Extra repository: https://modx.com/extras/p
 
 __Current version__ (github): 1.5.0-pl
 
-__Current version in Modx Extra repository__: 1.4.6-pl
+__Current version in Modx Extra repository__: 1.5.0-pl
 
 
 ## Features
