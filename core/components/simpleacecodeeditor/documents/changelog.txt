@@ -1,4 +1,8 @@
 
+24 Oct. 2018 - Indigo74
+Version 1.5.1
+ * Fix issue (PHP Fatal Error) when "empty" template is selected
+
 15 Oct. 2018 - Indigo74
 Version 1.5.0
  * Added SoftWraps, FontSize, SoftTabs properties to allow more customisation
