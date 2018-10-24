@@ -382,21 +382,28 @@ switch ($modx->event->name) {
 
         // Document can have template variables associated
         $templateId = $modx->controller->resource->get('template');
-        $templateVarList = $modx->getObject('modTemplate', $templateId)->getTemplateVarList();
-        // Loop through all TV's
-        foreach ($templateVarList['collection'] as $tv) {
-            $tvDescription = $tv->get('description');
-            // Check if this TV: 
-            //      - is associated to the current template
-            //      - is textarea
-            //      - has the char '/' in description which means a mime type is *potentially* set
-            if ($tv->hasTemplate($templateId) && $tv->get('type') === 'textarea' && strpos($tvDescription, '/') !== FALSE) {
-                // Loop through known mime
-                foreach(array_keys($mimeTypeToMode) as $currMimeType) {
-                    if (strpos($tvDescription, $currMimeType) !== FALSE) 
-                    {
-                        $targetFields['tv'.$tv->get('id')] = $currMimeType;
-                        break;
+        if ($templateId) {
+            // Try to retrieve the template value (can be null)
+            $templateVar = $modx->getObject('modTemplate', $templateId);
+            if ($templateVar) {
+                // Retrieve all TV's
+                $templateVarList = $templateVar->getTemplateVarList();
+                // Loop through all TV's
+                foreach ($templateVarList['collection'] as $tv) {
+                    $tvDescription = $tv->get('description');
+                    // Check if this TV: 
+                    //      - is associated to the current template
+                    //      - is textarea
+                    //      - has the char '/' in description which means a mime type is *potentially* set
+                    if ($tv->hasTemplate($templateId) && $tv->get('type') === 'textarea' && strpos($tvDescription, '/') !== FALSE) {
+                        // Loop through known mime
+                        foreach(array_keys($mimeTypeToMode) as $currMimeType) {
+                            if (strpos($tvDescription, $currMimeType) !== FALSE) 
+                            {
+                                $targetFields['tv'.$tv->get('id')] = $currMimeType;
+                                break;
+                            }
+                        }
                     }
                 }
             }
