@@ -157,14 +157,14 @@ See [these binding examples](https://github.com/ajaxorg/ace/wiki/Default-Keyboar
 
 When the editor is initialized, a proper mode (i.e. syntax highlighting) is picked based on several rules.
 
-**For Templates**: HTML (`text/html`)
-**For Snippets**: PHP (`application/x-php`)
-**For Plugins**: PHP (`application/x-php`)
-**For Chunks**: HTML (`text/html`) or based on file extension if static (can be overridden using _ChunkDetectMIMEShebang_ feature)
-**For File creation**: No specific highlighting (`text/plain`)
-**For File edition**: based on file extension
-**For document (page) edition**: based on content type set
-**For TV in document (page) edition**: based on mime-type found in TV's description
+* **For Templates**: HTML (`text/html`)
+* **For Snippets**: PHP (`application/x-php`)
+* **For Plugins**: PHP (`application/x-php`)
+* **For Chunks**: Plain (`text/plain`) for mixed code and general purpose, HTML (`text/html`) or based on file extension if static (can be overridden using _ChunkDetectMIMEShebang_ feature)
+* **For File creation**: No specific highlighting (`text/plain`)
+* **For File edition**: based on file extension
+* **For document (page) edition**: based on content type set
+* **For TV in document (page) edition**: based on mime-type found in TV's description
 
 
 ## File extension mapping
