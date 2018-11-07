@@ -535,8 +535,14 @@ if (!empty($targetFields)) {
             editor.on("change", function() {
                 textarea.value = currentSession.getValue();
             });
+
+            // Run fix
+            fixJumpingCursorIssue(editor, currentSession, aceEditorDiv);
+            
+            // Force a resize once
+            editor.resize();
         };
-        
+
         /** 
          * Function search for the textarea
          * Recursive function
@@ -774,6 +780,52 @@ if (!empty($targetFields)) {
                 editor.session.setMode(mode);
             }.bind(this));
         };
+        
+        /**
+         * Function to fix issue with TV's and cursor always jumping around 
+         * (see issue #14 on Github)
+         *
+         * Issue is related to how the size seems to be computed by Ace
+         * If the textarea is hidden (like move away from screen, which is 
+         * the case for TV in other tabs), Ace has issue computing the proper size.
+         *
+         * Hence we try to be clever and call resize as soon as we can.
+         *
+         * This is clearly hackish, feel free to offer a PR if you have a better idea...
+         */
+        var fixJumpingCursorIssue = function(editor, currentSession, aceEditorDiv) {
+            
+            // Force resize on first cursor change or on mousemove
+            // Should work for all browsers
+            // Downside: editor content not visible until one of the event happens
+            var onChangeCursorCallBack = function() {
+                // Resize - this is important
+        		editor.resize();
+                // Remove all listeners for performance reason as they are not needed anymore
+        		currentSession.selection.off('changeCursor', onChangeCursorCallBack);
+        		editor.off('mousemove', onChangeCursorCallBack);
+            };
+            // Add event listeners
+            currentSession.selection.on('changeCursor', onChangeCursorCallBack);
+            editor.on('mousemove', onChangeCursorCallBack);
+            
+            // Force resize as soon as the editor become visible
+            // Uses IntersectionObserver, hence browser support is not good: Chrome 51+, Edge 15+, FF 55+
+            if ('IntersectionObserver' in window) {
+                // Create observer from document
+                var observer = new IntersectionObserver(function(entries, observer) {
+                    // Check if editor is visible
+                    if (entries[0].intersectionRatio > 0) {
+                        // Run callback to remove all other listeners
+                        onChangeCursorCallBack();
+                        // Remove observer for performance reader, this is not needed anymore
+                        observer.disconnect();
+                    }
+                }, { root: document.documentElement });
+                // Start observing for ace node
+                observer.observe(aceEditorDiv);
+            }
+        }
 
         // Start searching!
         {$tryToGetTextArea}
