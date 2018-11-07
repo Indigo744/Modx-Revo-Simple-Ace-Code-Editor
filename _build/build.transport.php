@@ -9,7 +9,7 @@
 /* define version */
 define('PKG_NAME','SimpleAceCodeEditor');
 define('PKG_NAMESPACE','simpleacecodeeditor');
-define('PKG_VERSION','1.5.1');
+define('PKG_VERSION','1.5.2');
 define('PKG_RELEASE','pl');
 define('PKG_DESCRIPTION',sprintf('Ace Code Editor *simple* integration - %s-%s', PKG_VERSION, PKG_RELEASE));
 

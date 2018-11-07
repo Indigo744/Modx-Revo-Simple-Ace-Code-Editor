@@ -7,7 +7,7 @@ It integrates [Ace Code Editor](https://ace.c9.io) into MODx Revolution in a sim
 
 It is available as a package in MODX Extra repository: https://modx.com/extras/package/simpleacecodeeditor
 
-__Current version__ (github): 1.5.1-pl
+__Current version__ (github): 1.5.2-pl
 
 __Current version in Modx Extra repository__: 1.5.1-pl
 
@@ -220,7 +220,7 @@ Here is how a MIME type is mapped to its mode:
  * __`text/x-markdown`__: `markdown`
  * __`text/markdown`__: `markdown`
  * __`text/plain`__: `text`
- * __`text/x-twig`__: `twig'
+ * __`text/x-twig`__: `twig`
  * __`application/x-extension-htaccess`__: `apache_conf`
  * __`application/vnd.coffeescript`__: `coffee`
  * __`application/x-typescript`__: `typescript`

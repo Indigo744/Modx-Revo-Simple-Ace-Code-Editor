@@ -1,4 +1,8 @@
 
+07 Nov. 2018 - Indigo74
+Version 1.5.2
+ * Fix issue of jumping cursor in TVs
+
 24 Oct. 2018 - Indigo74
 Version 1.5.1
  * Fix issue (PHP Fatal Error) when "empty" template is selected
